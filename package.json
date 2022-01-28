@@ -1,0 +1,142 @@
+{
+    "name": "vscode-translation",
+    "displayName": "Translation",
+    "description": "A translation tool for Visual Studio Code.",
+    "publisher": "caiqichang",
+    "version": "2.0.0",
+    "engines": {
+        "vscode": "^1.63.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "translate",
+        "翻译"
+    ],
+    "icon": "resources/vscode-translation-icon.png",
+    "extensionKind": [
+        "ui",
+        "workspace"
+    ],
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/caiqichang/vscode-translation"
+    },
+    "main": "extension.js",
+    "activationEvents": [
+        "onCommand:simpleTranslate",
+        "onCommand:completeTranslate",
+        "onCommand:translation",
+        "onCommand:ss"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "Translation",
+            "properties": {
+                "translation.source-language": {
+                    "description": "Default source language for translation.",
+                    "type": "string",
+                    "default": "auto"
+                },
+                "translation.target-language": {
+                    "description": "Default target language for translation.",
+                    "type": "string",
+                    "default": "en"
+                },
+                "translation.simple-display-mode": {
+                    "description": "Specifies how to display the result of simple translation.",
+                    "type": "string",
+                    "enum": ["notification", "modal", "statusBar"],
+                    "default": "notification"
+                },
+                "translation.enable-proxy": {
+                    "description": "Controls whether to use http proxy for translation.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "translation.proxy-url": {
+                    "description": "URL for http proxy.",
+                    "type": "string",
+                    "default": "http://127.0.0.1:1080"
+                },
+                "translation.ffplay-path": {
+                    "description": "Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.",
+                    "type": "string",
+                    "default": null
+                },
+                "translation.ss": {
+                    "description": "",
+                    "type": "array",
+                    "default": []
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "simpleTranslate",
+                "title": "Simple Translate"
+            },
+            {
+                "command": "completeTranslate",
+                "title": "Complete Translate"
+            },
+            {
+                "command": "translation",
+                "title": "Translation"
+            },
+            {
+                "command": "ss",
+                "title": "ss"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "simpleTranslate",
+                    "when": "false"
+                },
+                {
+                    "command": "completeTranslate",
+                    "when": "false"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "simpleTranslate",
+                    "when": "editorHasSelection",
+                    "group": "0_translation@0"
+                },
+                {
+                    "command": "completeTranslate",
+                    "when": "editorHasSelection",
+                    "group": "0_translation@1"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "simpleTranslate",
+                "when": "editorHasSelection",
+                "key": "shift+alt+t"
+            }
+        ]
+    },
+    "scripts": {
+        "prepackage": "node script/pre-package.js",
+        "package": "npx --package vsce vsce package -o build/"
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.12",
+        "@types/vscode": "^1.63.0"
+    },
+    "dependencies": {
+        "@vscode/codicons": "^0.0.26",
+        "@vscode/webview-ui-toolkit": "^0.8.4"
+    }
+}
