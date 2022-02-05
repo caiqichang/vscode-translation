@@ -11,8 +11,7 @@
         "Other"
     ],
     "keywords": [
-        "translate",
-        "翻译"
+        "translate"
     ],
     "icon": "resources/vscode-translation-icon.png",
     "extensionKind": [
