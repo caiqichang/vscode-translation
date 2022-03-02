@@ -32,11 +32,14 @@ const handler = (context, param) => {
                 return;
             }
 
-            panel = vscode.window.createWebviewPanel('translationPanel', 'Translation', vscode.ViewColumn.Beside, {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath))],
-                enableFindWidget: true,
-            });
+            panel = vscode.window.createWebviewPanel('translationPanel', 'Translation',
+                vscode.window.activeTextEditor ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active,
+                {
+                    enableScripts: true,
+                    localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath))],
+                    enableFindWidget: true,
+                }
+            );
             panel.onDidDispose(() => panel = null);
 
             panel.webview.html = webviewUtils.renderReources(context, panel, content.toString(), [

@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.2
+- Fixe `Translation` panel view column.
+- Update dependencies version.
+
 ## 1.2.8
 - Add three ways (notification, modal, statusBar) to display the result of simple translation.
 
