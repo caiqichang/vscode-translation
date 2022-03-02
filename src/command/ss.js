@@ -17,11 +17,14 @@ const handler = context => {
                 return;
             }
 
-            panel = vscode.window.createWebviewPanel('ss', 'SS', vscode.ViewColumn.Beside, {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath))],
-                enableFindWidget: true,
-            });
+            panel = vscode.window.createWebviewPanel('ss', 'SS',
+                vscode.window.activeTextEditor ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active,
+                {
+                    enableScripts: true,
+                    localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath))],
+                    enableFindWidget: true,
+                }
+            );
             panel.webview.html = webviewUtils.renderReources(context, panel, content.toString(), []);
             panel.onDidDispose(() => panel = null);
 
