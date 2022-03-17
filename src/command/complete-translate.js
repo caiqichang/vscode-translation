@@ -14,7 +14,12 @@ const handler = (context, param) => {
     }
 
     if (panel) {
-        if (!panel.visible) panel.reveal();
+        if (!panel.visible) {
+            panel.reveal();
+            panel.webview.postMessage({
+                operation: 'reveal',
+            });
+        }
         if (!param.fromCommand) {
             panel.webview.postMessage({
                 operation: 'query',

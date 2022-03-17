@@ -382,10 +382,10 @@
                 };
             },
             created() {
-                setTimeout(() => {
+                this.$nextTick(() => {
                     let preState = vscode.getState();
                     if (preState) this.state = preState;
-                }, 100);
+                });
             },
             computed: {
                 synsetsEntries() {
@@ -583,6 +583,13 @@
                             };
                             this.state.loading = false;
                             this.setState();
+                            break;
+                        }
+                        case 'reveal': {
+                            this.$nextTick(() => {
+                                let preState = vscode.getState();
+                                if (preState) this.state = preState;
+                            });
                             break;
                         }
                     }

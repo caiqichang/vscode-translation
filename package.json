@@ -3,9 +3,9 @@
     "displayName": "Translation",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "engines": {
-        "vscode": "^1.64.0"
+        "vscode": "^1.65.0"
     },
     "categories": [
         "Other"
@@ -31,8 +31,7 @@
     "activationEvents": [
         "onCommand:simpleTranslate",
         "onCommand:completeTranslate",
-        "onCommand:translation",
-        "onCommand:ss"
+        "onCommand:translation"
     ],
     "contributes": {
         "configuration": {
@@ -72,11 +71,6 @@
                     "description": "Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.",
                     "type": "string",
                     "default": null
-                },
-                "translation.ss": {
-                    "description": "",
-                    "type": "array",
-                    "default": []
                 }
             }
         },
@@ -92,10 +86,6 @@
             {
                 "command": "translation",
                 "title": "Translation"
-            },
-            {
-                "command": "ss",
-                "title": "ss"
             }
         ],
         "menus": {
@@ -136,10 +126,10 @@
     },
     "devDependencies": {
         "@types/node": "^17.0.21",
-        "@types/vscode": "^1.64.0"
+        "@types/vscode": "^1.65.0"
     },
     "dependencies": {
-        "@vscode/codicons": "^0.0.28",
-        "@vscode/webview-ui-toolkit": "^0.9.1"
+        "@vscode/codicons": "^0.0.29",
+        "@vscode/webview-ui-toolkit": "^0.9.2"
     }
 }

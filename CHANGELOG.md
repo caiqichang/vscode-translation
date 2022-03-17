@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.3
+- Fix translation state lost when panel reveal.
+- Upgrade dependencies version.
+
 ## 2.0.2
 - Fixe `Translation` panel view column.
 - Update dependencies version.
