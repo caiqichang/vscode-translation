@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.4
+- Fix packaging failed.
+
 ## 2.0.3
 - Fix translation state lost when panel reveal.
 - Upgrade dependencies version.
