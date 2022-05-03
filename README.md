@@ -4,8 +4,6 @@ This extension provides translation (based on [Google Translation](https://trans
 
 [Get from Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation)
 
-[Get from Open VSX](https://open-vsx.org/extension/caiqichang/vscode-translation)
-
 ## Features
 - Multiple languages translation support
 - Words or one sentence (support multiple lines, limit in 200 characters each time) translation support
