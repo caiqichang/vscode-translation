@@ -145,12 +145,16 @@
             vertical-align: top;
             color: var(--vscode-charts-blue);
         }
+
+        [v-cloak] {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
-    <div id="app">
+    <div id="app" v-cloak>
         <div>
             <form>
                 <div class="headLeft">

@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.6
+- Optimise translation panel.
+
 ## 2.0.5
 - Fixed that translation panel is not working when it revealing from imvisible.
 - Update dependencies.
