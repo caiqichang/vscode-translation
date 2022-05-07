@@ -385,6 +385,9 @@
                 this.$nextTick(() => {
                     let preState = vscode.getState();
                     if (preState) this.state = preState;
+                    vscode.postMessage({
+                        operation: 'getQueryText',
+                    });
                 });
             },
             computed: {
@@ -568,7 +571,7 @@
                             break;
                         }
                         case 'query': {
-                            this.state.source = message.parameter.q;
+                            if (message.parameter.q) this.state.source = message.parameter.q;
                             this.query();
                             break;
                         }
@@ -583,13 +586,6 @@
                             };
                             this.state.loading = false;
                             this.setState();
-                            break;
-                        }
-                        case 'reveal': {
-                            this.$nextTick(() => {
-                                let preState = vscode.getState();
-                                if (preState) this.state = preState;
-                            });
                             break;
                         }
                     }

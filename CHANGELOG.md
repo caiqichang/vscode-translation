@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.5
+- Fixed that translation panel is not working when it revealing from imvisible.
+- Update dependencies.
+
 ## 2.0.4
 - Fix packaging failed.
 

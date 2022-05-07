@@ -7,28 +7,30 @@ const googleTranslateUtils = require('../utils/google-translation-utils.js');
 
 let panel = null;
 
+let queryText = null;
+let isFirst = true;
+
 const handler = (context, param) => {
     let selection = null;
     if (!param.fromCommand) {
         selection = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection);
     }
+    queryText = selection;
 
     if (panel) {
         if (!panel.visible) {
             panel.reveal();
-            panel.webview.postMessage({
-                operation: 'reveal',
-            });
-        }
-        if (!param.fromCommand) {
+        }else {
             panel.webview.postMessage({
                 operation: 'query',
                 parameter: {
                     q: selection,
                 },
             });
+            queryText = null;
         }
     } else {
+        isFirst = true;
         let config = vscode.workspace.getConfiguration('translation');
         fs.readFile(`${context.extensionPath}/src/webview/translation.html`, (error, content) => {
             if (error) {
@@ -83,17 +85,31 @@ const handler = (context, param) => {
                         });
                         break;
                     }
+                    case 'getQueryText': {
+                        if (isFirst) {
+                            panel.webview.postMessage({
+                                operation: 'init',
+                                parameter: {
+                                    sl: config.get('source-language'),
+                                    tl: config.get('target-language'),
+                                    q: selection,
+                                },
+                            });
+                            isFirst = false;
+                        }else {
+                            panel?.webview.postMessage({
+                                operation: 'query',
+                                parameter: {
+                                    q: queryText,
+                                },
+                            });
+                            queryText = null;
+                        }
+                        break;
+                    }
                 }
             });
 
-            panel.webview.postMessage({
-                operation: 'init',
-                parameter: {
-                    sl: config.get('source-language'),
-                    tl: config.get('target-language'),
-                    q: selection,
-                },
-            });
         });
     }
 };
