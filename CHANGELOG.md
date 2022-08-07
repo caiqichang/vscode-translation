@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.0.7
+- Add multiple sentences translation support.
+- Fix alternative translation lost error.
+- Update dependencies.
+
 ## 2.0.6
 - Optimise translation panel.
 

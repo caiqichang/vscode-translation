@@ -6,7 +6,6 @@ This extension provides translation (based on [Google Translation](https://trans
 
 ## Features
 - Multiple languages translation support
-- Words or one sentence (support multiple lines, limit in 200 characters each time) translation support
 - Pronunciation support ([FFmpeg](https://ffmpeg.org) is required)
 - HTTP proxy support
 - [Settings](#settings)

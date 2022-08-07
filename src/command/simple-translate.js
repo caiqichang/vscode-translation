@@ -9,8 +9,12 @@ const handler = context => {
         tl: config.get('target-language'),
         q: selection,
     }).then(data => {
-        let results = ['🔹' + data.sentences[0].trans];
-        if (data.alternative_translations) data.alternative_translations[0].alternative.forEach(i => results.push(i.word_postproc));
+        let results = ['🔹' + data.sentences.filter(i => i.trans).map(i => i.trans).join("")];
+        if (data.alternative_translations && data.alternative_translations.length > 0) {
+            if (data.alternative_translations.length === 1) {
+                data.alternative_translations[0].alternative.forEach(j => results.push(j.word_postproc))
+            }
+        }
         switch(config.get('simple-display-mode')) {
             case 'modal': {
                 vscode.window.showInformationMessage(selection, {

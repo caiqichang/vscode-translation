@@ -52,7 +52,7 @@
             border: 1px solid;
             background-color: var(--vscode-editor-background);
             width: 150px;
-            height: 200px;
+            max-height: 400px;
             text-align: left;
             overflow-x: hidden;
             overflow-y: auto;
@@ -105,6 +105,10 @@
             color: var(--vscode-charts-green);
         }
 
+        .alterPart {
+            color: var(--vscode-charts-green);
+        }
+
         .dictEntry {
             margin-bottom: 10px;
         }
@@ -149,6 +153,11 @@
         [v-cloak] {
             display: none;
         }
+
+        .pronounceFrame {
+            max-height: 150px;
+            overflow: auto;
+        }
     </style>
 </head>
 
@@ -181,13 +190,13 @@
                     </div>
 
                     <div>
-                        <vscode-text-area v-model="state.source" class="textArea" rows="5" maxlength="200"
+                        <vscode-text-area v-model="state.source" class="textArea" rows="8"
                             placeholder="Original Text">
                         </vscode-text-area>
                     </div>
 
                     <div>
-                        <div>
+                        <div class="pronounceFrame">
                             <vscode-button class="pronunceButton" appearance="icon" @click="pronunciation('source')">
                                 <span class="codicon codicon-unmute"></span>
                             </vscode-button>
@@ -244,13 +253,13 @@
                     </div>
 
                     <div>
-                        <vscode-text-area v-model="state.target" class="textArea" rows="5" maxlength="200"
+                        <vscode-text-area v-model="state.target" class="textArea" rows="8"
                             placeholder="Translation">
                         </vscode-text-area>
                     </div>
 
                     <div>
-                        <div>
+                        <div class="pronounceFrame">
                             <vscode-button class="pronunceButton" appearance="icon" @click="pronunciation('target')">
                                 <span class="codicon codicon-unmute"></span>
                             </vscode-button>
@@ -291,14 +300,27 @@
                         </div>
                     </div>
                     <div v-else>
-                        <div v-if="state.result.alternative_translations && state.result.alternative_translations[0]">
+                        <div v-if="!alternativeTranslation.isEmpty">
                             <div class="alterTitle">Alternative:</div>
-                            <div v-for="(i, index) in state.result.alternative_translations[0].alternative"
-                                :key="i.word_postproc + index">
-                                <div class="alterItem"><span
-                                        class="codicon codicon-debug-breakpoint-log dictPosIcon"></span>{{i.word_postproc}}
+                            <template v-if="alternativeTranslation.isMultipart">
+                                <div v-for="(i, index) in alternativeTranslation.data"
+                                :key="index">
+                                    <div class="alterPart">Part: {{ index + 1 }}</div>
+                                    <div v-for="(j, jIndex) in i" :key="jIndex">
+                                        <div class="alterItem"><span
+                                            class="codicon codicon-debug-breakpoint-log dictPosIcon"></span>{{j}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
+                            <template v-else >
+                                <div v-for="(i, index) in alternativeTranslation.data"
+                                :key="index">
+                                    <div class="alterItem"><span
+                                            class="codicon codicon-debug-breakpoint-log dictPosIcon"></span>{{i}}
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                         <div v-else>No Data</div>
                     </div>
@@ -406,13 +428,13 @@
                 },
                 sourcePronunce() {
                     return this.state.result ?
-                        this.state.result.sentences[1] ?
-                            this.state.result.sentences[1].src_translit : '' : '';
+                        this.state.result.sentences[this.state.result.sentences.length - 1] ?
+                            this.state.result.sentences[this.state.result.sentences.length - 1].src_translit : '' : '';
                 },
                 targetPronounce() {
                     return this.state.result ?
-                        this.state.result.sentences[1] ?
-                            this.state.result.sentences[1].translit : '' : '';
+                        this.state.result.sentences[this.state.result.sentences.length - 1] ?
+                            this.state.result.sentences[this.state.result.sentences.length - 1].translit : '' : '';
                 },
                 pronunceSourceLang() {
                     if (!this.state.result) {
@@ -424,6 +446,26 @@
                         }
                     }
                     return '';
+                },
+                alternativeTranslation() {
+                    let result = {
+                            isEmpty: false,
+                            data: [],
+                        }
+                    if (this.state.result.alternative_translations && this.state.result.alternative_translations.length > 0) {
+                        if (this.state.result.alternative_translations.length > 1) {
+                            result.isMultipart = true
+                            this.state.result.alternative_translations.forEach(j => {
+                                result.data.push(j.alternative.map(i => i.word_postproc))
+                            })
+                        }else {
+                            result.isMultipart = false
+                            this.state.result.alternative_translations[0].alternative.forEach(i => result.data.push(i.word_postproc))
+                        }
+                    }else {
+                        result.isEmpty = true
+                    }
+                    return result
                 },
             },
             watch: {
@@ -581,10 +623,10 @@
                         }
                         case 'receiveTranslation': {
                             this.state.result = message.parameter;
-                            this.state.target = message.parameter.sentences[0].trans;
+                            this.state.target = message.parameter.sentences.filter(i => i.trans).map(i => i.trans).join("");
                             this.state.temp = {
-                                source: this.state.result.sentences[0].orig,
-                                target: this.state.result.sentences[0].trans,
+                                source: this.state.result.sentences.filter(i => i.orig).map(i => i.orig).join(""),
+                                target: this.state.result.sentences.filter(i => i.trans).map(i => i.trans).join(""),
                                 sourceLang: this.state.result.src,
                                 targetLang: this.state.targetLang,
                             };
