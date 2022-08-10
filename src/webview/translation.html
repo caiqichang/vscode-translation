@@ -208,14 +208,12 @@
 
                 <div class="headCenter">
                     <div class="history">
-                        <vscode-button appearance="icon" title="History" @click="showHistory = true"
-                            @focusout="hideHistory()">
-                            <span class="codicon codicon-history"></span>
+                        <vscode-button v-if="isUnmark" appearance="icon" title="mark" @click="mark">
+                            <span class="codicon codicon-star-empty"></span>
                         </vscode-button>
-                        <div v-if="showHistory" class="historyPanel">
-                            <div v-for="(i, index) in state.history" :key="i + index" class="historyItem" :title="i"
-                                @click="historySelect(i)">{{i}}</div>
-                        </div>
+                        <vscode-button v-else appearance="icon" title="unmark" @click="unmark(state.source)">
+                            <span class="codicon codicon-star-full"></span>
+                        </vscode-button>
                     </div>
                     <div class="translate">
                         <vscode-button appearance="icon" title="Translate" @click="query()">
@@ -274,13 +272,49 @@
 
         <div>
             <vscode-progress-ring v-if="state.loading"></vscode-progress-ring>
-            <vscode-panels v-if="state.result" :activeid="state.currentTab">
+            <vscode-panels v-else :activeid="state.currentTab">
+                <vscode-panel-tab id="history" @click="tabChange('history')">History</vscode-panel-tab>
+                <vscode-panel-tab id="favorite" @click="tabChange('favorite')">Favorite</vscode-panel-tab>
                 <vscode-panel-tab id="translation" @click="tabChange('translation')">Tanslation</vscode-panel-tab>
                 <vscode-panel-tab id="definition" @click="tabChange('definition')">Definition</vscode-panel-tab>
                 <vscode-panel-tab id="example" @click="tabChange('example')">Example</vscode-panel-tab>
 
+                <vscode-panel-view aria-labelledby="history">
+                    <div>
+                        <div style="margin-bottom: 10px;">
+                            <vscode-button @click="clearHistory" >
+                                <span slot="start" class="codicon codicon-trash"></span>Clear
+                            </vscode-button>
+                        </div>
+                        <div v-if="state.history.history.length > 0">
+                            <div class="exampleItem" v-for="(i, index) in state.history?.history"
+                                :key="i.text + index">
+                                <vscode-badge class="exampleIndex">{{index + 1}}</vscode-badge>
+                                <span class="link" @click="historyClick(i)">{{ i.text }}</span>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div>No Data</div>
+                        </div>
+                    </div>
+                </vscode-panel-view>
+
+                <vscode-panel-view aria-labelledby="favorite">
+                    <div v-if="state.favorite.favorite.length > 0">
+                        <div class="exampleItem" v-for="(i, index) in state.favorite?.favorite"
+                            :key="i.text + index">
+                            <vscode-badge class="exampleIndex">{{index + 1}}</vscode-badge>
+                            <vscode-tag style="margin-right: 10px;cursor: pointer;" @click="unmark(i.text)">Remove</vscode-tag>
+                            <span class="link" @click="favoriteClick(i)">{{ i.text }}</span>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <div>No Data</div>
+                    </div>
+                </vscode-panel-view>
+
                 <vscode-panel-view aria-labelledby="translation">
-                    <div v-if="state.result.dict">
+                    <div v-if="state.result?.dict">
                         <div class="dictItem" v-for="(i, index) in state.result.dict" :key="i.pos + index">
                             <div class="dictPos"><span
                                     class="codicon codicon-debug-breakpoint-log dictPosIcon"></span>{{i.pos}}</div>
@@ -327,7 +361,7 @@
                 </vscode-panel-view>
 
                 <vscode-panel-view aria-labelledby="definition">
-                    <div v-if="state.result.definitions">
+                    <div v-if="state.result?.definitions">
                         <div class="exampleItem" v-for="(i, index) in state.result.definitions" :key="i.pos + index">
                             <div class="dictPos"><span
                                     class="codicon codicon-debug-breakpoint-log dictPosIcon"></span>{{i.pos}}</div>
@@ -365,7 +399,7 @@
                 </vscode-panel-view>
 
                 <vscode-panel-view aria-labelledby="example">
-                    <div v-if="state.result.examples">
+                    <div v-if="state.result?.examples">
                         <div class="exampleItem" v-for="(i, index) in state.result.examples.example"
                             :key="i.text + index">
                             <vscode-badge class="exampleIndex">{{index + 1}}</vscode-badge>
@@ -397,14 +431,16 @@
                         source: null,
                         target: null,
                         result: null,
-                        history: [],
+                        // history: [],
                         loading: false,
                         temp: null,
-                        currentTab: 'translation',
+                        currentTab: 'history',
+                        history: {history: []},
+                        favorite: {favorite: []},
+                        maxHistory: 50,
                     },
                     sourceLangList: SOURCE_LANGUAGE,
                     targetLangList: TARGET_LANGUAGE,
-                    showHistory: false,
                 };
             },
             created() {
@@ -452,7 +488,7 @@
                             isEmpty: false,
                             data: [],
                         }
-                    if (this.state.result.alternative_translations && this.state.result.alternative_translations.length > 0) {
+                    if (this.state.result?.alternative_translations && this.state.result.alternative_translations.length > 0) {
                         if (this.state.result.alternative_translations.length > 1) {
                             result.isMultipart = true
                             this.state.result.alternative_translations.forEach(j => {
@@ -466,6 +502,9 @@
                         result.isEmpty = true
                     }
                     return result
+                },
+                isUnmark() {
+                    return this.state.favorite.favorite.map(i => i.text).indexOf(this.state.source) < 0
                 },
             },
             watch: {
@@ -519,9 +558,6 @@
                     this.state.targetLang = value;
                     this.setState();
                 },
-                hideHistory() {
-                    setTimeout(() => this.showHistory = false, 200);
-                },
                 copyAction(target) {
                     if (this.state[target]) {
                         window.navigator.clipboard.writeText(this.state[target]);
@@ -533,10 +569,6 @@
                             this.state[target] = text;
                         }
                     });
-                },
-                historySelect(text) {
-                    this.state.source = text;
-                    this.query();
                 },
                 swapAction() {
                     let t = this.state.source;
@@ -589,6 +621,9 @@
                     this.state.sourceLang = initState.sl;
                     this.state.targetLang = initState.tl;
                     this.state.source = initState.q;
+                    this.state.history = initState.history
+                    this.state.favorite = initState.favorite
+                    this.state.maxHistory = initState.maxHistory
                     this.setState();
                     this.query();
                 },
@@ -597,7 +632,6 @@
                         this.state.target = null;
                         this.state.result = null;
                         this.state.loading = true;
-                        this.state.history.unshift(this.state.source);
                         vscode.postMessage({
                             operation: 'getTranslate',
                             parameter: {
@@ -606,6 +640,19 @@
                                 sl: this.state.sourceLang,
                                 q: this.state.source,
                             },
+                        });
+                        this.state.currentTab = "translation"
+                        if (this.state.history.history.length >= this.state.maxHistory) {
+                            this.state.history.history.pop()
+                        }
+                        this.state.history.history.unshift({
+                            text: this.state.source,
+                            sl: this.state.sourceLang,
+                            tl: this.state.targetLang,
+                        })
+                        vscode.postMessage({
+                            operation: 'saveHistory',
+                            parameter: JSON.parse(JSON.stringify(this.state.history)),
                         });
                         this.setState();
                     }
@@ -635,6 +682,46 @@
                             break;
                         }
                     }
+                },
+                historyClick(row) {
+                    this.state.source = row.text;
+                    this.state.sourceLang = row.sl
+                    this.state.targetLang = row.tl
+                    this.query()
+                },
+                favoriteClick(row) {
+                    this.state.source = row.text;
+                    this.state.sourceLang = row.sl
+                    this.state.targetLang = row.tl
+                    this.query()
+                },
+                clearHistory() {
+                    this.state.history.history = []
+                    vscode.postMessage({
+                        operation: 'saveHistory',
+                        parameter: JSON.parse(JSON.stringify(this.state.history)),
+                    })
+                    this.setState()
+                },
+                mark() {
+                    this.state.favorite.favorite.unshift({
+                        text: this.state.source,
+                        sl: this.state.sourceLang,
+                        tl: this.state.targetLang,
+                    })
+                    vscode.postMessage({
+                        operation: 'saveFavorite',
+                        parameter: JSON.parse(JSON.stringify(this.state.favorite)),
+                    })
+                    this.setState()
+                },
+                unmark(text) {
+                    this.state.favorite.favorite = this.state.favorite.favorite.filter(i => i.text !== text)
+                    vscode.postMessage({
+                        operation: 'saveFavorite',
+                        parameter: JSON.parse(JSON.stringify(this.state.favorite)),
+                    })
+                    this.setState()
                 },
             },
         });

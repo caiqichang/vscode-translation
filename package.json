@@ -3,7 +3,7 @@
     "displayName": "Translation",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "engines": {
         "vscode": "^1.69.1"
     },
@@ -71,6 +71,11 @@
                     "description": "Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.",
                     "type": "string",
                     "default": null
+                },
+                "translation.history-max": {
+                    "description": "Max size of history.",
+                    "type": "number",
+                    "default": 50
                 }
             }
         },

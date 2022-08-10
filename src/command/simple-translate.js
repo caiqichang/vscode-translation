@@ -1,9 +1,35 @@
 const vscode = require('vscode');
 const googleTranslateUtils = require('../utils/google-translation-utils.js');
+const fs = require('fs');
 
 const handler = context => {
     let selection = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection);
     let config = vscode.workspace.getConfiguration('translation');
+
+    let dataFolder = `${context.extensionPath}/data`;
+    let file = `${dataFolder}/history.json`
+
+    const readHistory = () => {
+        try {
+            return JSON.parse(fs.readFileSync(file))
+        }catch(e) {
+            return {history: []}
+        }
+    }
+
+    const writeHistory = (item) => {
+        let history = readHistory()
+        if (history.history.length >= config.get("history-max")) history.history.pop()
+        history.history.unshift(item)
+        fs.mkdirSync(dataFolder, {
+            recursive: true,
+            mode: 0o777,
+        });
+        fs.writeFileSync(file, JSON.stringify(history), {
+            mode: 0o777,
+        });
+    }
+
     googleTranslateUtils.getTranslate({
         sl: config.get('source-language'),
         tl: config.get('target-language'),
@@ -31,6 +57,13 @@ const handler = context => {
                 vscode.window.showInformationMessage(results.join('🔹'));
             }
         }
+
+        writeHistory({
+            text: selection,
+            sl: config.get('source-language'),
+            tl: config.get('target-language'),
+        })
+
     }).catch(error => {
         console.log(error);
         vscode.window.showErrorMessage(error.toString());

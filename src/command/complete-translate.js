@@ -11,6 +11,28 @@ let queryText = null;
 let isFirst = true;
 
 const handler = (context, param) => {
+
+    let dataFolder = `${context.extensionPath}/data`;
+
+    const writeFile = (file, content) => {
+        fs.mkdirSync(dataFolder, {
+            recursive: true,
+            mode: 0o777,
+        });
+        fs.writeFileSync(file, content, {
+            mode: 0o777,
+        });
+    }
+    
+    const readFile = (file) => {
+        try {
+            return JSON.parse(fs.readFileSync(file))
+        }catch(e) {
+            return null 
+        }
+        
+    }
+
     let selection = null;
     if (!param.fromCommand) {
         selection = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor.selection);
@@ -71,15 +93,8 @@ const handler = (context, param) => {
                     }
                     case 'getTts': {
                         googleTranslateUtils.getTts(message.parameter).then(data => {
-                            let path = `${context.extensionPath}/sound`;
-                            fs.mkdirSync(path, {
-                                recursive: true,
-                                mode: 0o777,
-                            });
-                            let file = `${path}/tts.mp3`
-                            fs.writeFileSync(file, data, {
-                                mode: 0o777,
-                            });
+                            let file = `${dataFolder}/tts.mp3`
+                            writeFile(file, data)
                             let ffplay = config.get('ffplay-path') || 'ffplay';
                             child_process.exec(`"${ffplay}" -nodisp -autoexit "${file}"`);
                         });
@@ -92,6 +107,9 @@ const handler = (context, param) => {
                                 parameter: {
                                     sl: config.get('source-language'),
                                     tl: config.get('target-language'),
+                                    maxHistory: config.get("history-max"),
+                                    history: readFile(`${dataFolder}/history.json`) || {history: []},
+                                    favorite: readFile(`${dataFolder}/favorite.json`) || {favorite: []},
                                     q: selection,
                                 },
                             });
@@ -107,12 +125,21 @@ const handler = (context, param) => {
                         }
                         break;
                     }
+                    case "saveHistory": {
+                        writeFile(`${dataFolder}/history.json`, JSON.stringify(message.parameter))
+                        break
+                    }
+                    case "saveFavorite": {
+                        writeFile(`${dataFolder}/favorite.json`, JSON.stringify(message.parameter))
+                        break
+                    }
                 }
             });
 
         });
     }
 };
+
 
 module.exports = {
     handler,
