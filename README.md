@@ -6,6 +6,7 @@ This extension provides translation (based on [Google Translation](https://trans
 
 ## Features
 - Multiple languages translation support
+- Bookmark support
 - Pronunciation support ([FFmpeg](https://ffmpeg.org) is required)
 - HTTP proxy support
 - [Settings](#settings)

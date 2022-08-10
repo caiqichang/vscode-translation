@@ -2,7 +2,7 @@
 
 ## 2.0.8
 - Optimise translation history: enable persistence and max size setting.
-- Add favorite function.
+- Add bookmark function.
 
 ## 2.0.7
 - Add multiple sentences translation support.
