@@ -34,6 +34,9 @@ This extension provides translation (based on [Google Translation](https://trans
 
   // Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.
   "translation.ffplay-path": null,
+
+  // Max size of history.
+  "translation.history-max"： 50,
 }
 ```
 
