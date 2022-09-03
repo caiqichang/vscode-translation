@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.1.0
+- Remove FFmpeg section. After VSCode 1.71.0, FFmpeg is not required.
+
 ## 2.0.8
 - Optimise translation history: enable persistence and max size setting.
 - Add bookmark function.

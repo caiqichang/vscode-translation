@@ -3,7 +3,7 @@
     "displayName": "Translation",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "2.0.9",
+    "version": "2.1.0",
     "engines": {
         "vscode": "^1.69.1"
     },
@@ -66,11 +66,6 @@
                     "description": "URL for http proxy.",
                     "type": "string",
                     "default": "http://127.0.0.1:1080"
-                },
-                "translation.ffplay-path": {
-                    "description": "Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.",
-                    "type": "string",
-                    "default": null
                 },
                 "translation.history-max": {
                     "description": "Max size of history.",

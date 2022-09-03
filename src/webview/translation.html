@@ -413,7 +413,6 @@
             </vscode-panels>
         </div>
     </div>
-    </div>
 
     <script type="module" src="vscode-webview-ui-toolkit"></script>
     <script src="js/vue@next.js"></script>
@@ -441,6 +440,7 @@
                     },
                     sourceLangList: SOURCE_LANGUAGE,
                     targetLangList: TARGET_LANGUAGE,
+                    sound: null,
                 };
             },
             created() {
@@ -679,6 +679,11 @@
                             };
                             this.state.loading = false;
                             this.setState();
+                            break;
+                        }
+                        case "playTts": {
+                            let ttsFile = "tts.mp3"
+                            new Audio(`${ttsFile}?v=${Math.random()}`).play()
                             break;
                         }
                     }

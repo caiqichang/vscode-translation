@@ -7,7 +7,7 @@ This extension provides translation (based on [Google Translation](https://trans
 ## Features
 - Multiple languages translation support
 - Bookmark support
-- Pronunciation support ([FFmpeg](https://ffmpeg.org) is required)
+- Pronunciation support
 - HTTP proxy support
 - [Settings](#settings)
 - [Simple Translation](#simple-translation)
@@ -31,9 +31,6 @@ This extension provides translation (based on [Google Translation](https://trans
 
   // URL for http proxy.
   "translation.proxy-url": "http://127.0.0.1:1080",
-
-  // Specifies path of ffplay (e.g. C:/ffmpeg/bin/ffplay.exe). If null, extension will use ffplay which in environment variables.
-  "translation.ffplay-path": null,
 
   // Max size of history.
   "translation.history-max"： 50,

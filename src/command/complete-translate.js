@@ -76,6 +76,10 @@ const handler = (context, param) => {
                     src: 'js/language.js',
                     path: 'src/webview/js/language.js',
                 },
+                {
+                    src: "tts.mp3",
+                    path: "data/tts.mp3",
+                },
             ]);
             panel.webview.onDidReceiveMessage(message => {
                 switch (message.operation) {
@@ -95,8 +99,9 @@ const handler = (context, param) => {
                         googleTranslateUtils.getTts(message.parameter).then(data => {
                             let file = `${dataFolder}/tts.mp3`
                             writeFile(file, data)
-                            let ffplay = config.get('ffplay-path') || 'ffplay';
-                            child_process.exec(`"${ffplay}" -nodisp -autoexit "${file}"`);
+                            panel?.webview.postMessage({
+                                operation: 'playTts',
+                            });
                         });
                         break;
                     }
