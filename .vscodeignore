@@ -2,13 +2,14 @@ node_modules
 package-lock.json
 build
 sound
-
+src
+out/**/*.map
 .vscode
 script
 .gitignore
 .vscodeignore
 jsconfig.json
-
+tsconfig.json
 !node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js
 !node_modules/@vscode/codicons/dist/codicon.css
 !node_modules/@vscode/codicons/dist/codicon.ttf
