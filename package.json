@@ -1,9 +1,9 @@
 {
     "name": "vscode-translation",
-    "displayName": "Translation",
+    "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "engines": {
         "vscode": "^1.69.1"
     },
@@ -11,7 +11,8 @@
         "Other"
     ],
     "keywords": [
-        "translate"
+        "translate",
+        "translation"
     ],
     "icon": "resources/vscode-translation-icon.png",
     "extensionKind": [
