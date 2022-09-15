@@ -1,23 +1,25 @@
 import vscode from "vscode"
+import * as simpleTranslate from "./command/simple-translate"
+import * as completeTranslate from "./command/complete-translate"
+import {App} from "./util/app"
 
 export const activate = (context: vscode.ExtensionContext) => {
+    App.instance().setContext(context);
+
     [
         {
             command: "translation",
-            handler: () => {
-                let i = 0
-                console.log(123454)
-            }
+            handler: completeTranslate.action
         },
         {
             command: "simpleTranslate",
-            handler: () => { }
+            handler: simpleTranslate.action
         },
         {
             command: "completeTranslate",
-            handler: () => { }
+            handler: completeTranslate.action
         },
     ].forEach(i => {
-        vscode.commands.registerCommand(i.command, () => i.handler())
+        vscode.commands.registerCommand(i.command, () => i.handler(i.command))
     })
 }
