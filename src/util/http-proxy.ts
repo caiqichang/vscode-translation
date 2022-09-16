@@ -11,10 +11,10 @@ const responseHandler = (response: http.IncomingMessage,
     resolve: (value: Buffer | PromiseLike<Buffer>) => void, 
     reject: (reason?: any) => void) => {
 
-    let chunks: Uint8Array[] = []
-    response.on('data', data => chunks.push(data))
-    response.on('end', () => resolve(Buffer.concat(chunks)))
-    response.on('error', error => reject(error))
+    let chunks: Array<Uint8Array> = []
+    response.on("data", data => chunks.push(data))
+    response.on("end", () => resolve(Buffer.concat(chunks)))
+    response.on("error", error => reject(error))
 }
 
 const request = (url: string, options: http.RequestOptions | https.RequestOptions, body?: any): Promise<Buffer> => {
@@ -41,7 +41,7 @@ const request = (url: string, options: http.RequestOptions | https.RequestOption
                 })
                 if (body) request.write(body)
                 requestHelper(request, reject)
-                
+
             })
             requestHelper(proxyRequest, reject)
         }else {
