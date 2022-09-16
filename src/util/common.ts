@@ -1,28 +1,40 @@
 import vscode from "vscode"
+import * as fileUtil from "../util/file-util"
 
-export const getEditorSelection = (): String => {
+const getEditorSelection = (): string => {
     return vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection) ?? ""
 }
 
-export type MessageMode = "notification" | "modal" | "statusBar"
-
-export interface UserConfig {
-    sourceLanguage: String,
-    targetLanguage: String,
-    simpleDisplayMode: MessageMode,
-    enableProxy: Boolean,
-    proxyUrl: String,
-    historyMax: Number,
+enum MessageMode {
+    notification = "notification",
+    modal = "modal",
+    statusBar = "statusBar",
 }
 
-export const getUserConfig = (): UserConfig => {
-    let config = vscode.workspace.getConfiguration("translation")
-    return {
-        sourceLanguage: config.get<String>("source-language", "auto"),
-        targetLanguage: config.get<String>("target-language", "en"),
-        simpleDisplayMode: config.get<MessageMode>("target-language", "notification"),
-        enableProxy: config.get<Boolean>("enable-proxy", false),
-        proxyUrl: config.get<String>("proxy-url", "http://127.0.0.1:1080"),
-        historyMax: config.get<Number>("history-max", 50),
-    }
+enum ConfigKey {
+    sourceLanguage = "source-language",
+    targetLanguage = "target-language",
+    simpleDisplayMode = "simple-display-mode",
+    enableProxy = "enable-proxy",
+    proxyUrl = "proxy-url",
+    historyMax = "history-max",
+}
+
+const readPackageJson = (): any => {
+    return fileUtil.readExtensionJsonFile("package.json")
+}
+
+const configTitle = "translation"
+
+const getUserConfig = <T> (key: ConfigKey): T | null => {
+    let packageConfig = readPackageJson()?.contributes?.configuration?.properties ?? {}
+    let config = vscode.workspace.getConfiguration(configTitle)
+    return config.get<T>(key) ?? packageConfig?.[`${configTitle}.${key}`]?.default ?? null
+}
+
+export {
+    getEditorSelection,
+    ConfigKey,
+    getUserConfig,
+    readPackageJson,
 }

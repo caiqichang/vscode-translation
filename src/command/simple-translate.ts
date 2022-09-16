@@ -1,5 +1,9 @@
 import vscode from "vscode"
 
-export const action = (command: String) => {
+const action = (command: string) => {
 
+}
+
+export {
+    action,
 }

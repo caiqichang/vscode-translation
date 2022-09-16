@@ -1,6 +1,6 @@
 import vscode from "vscode"
 
-export class App {
+class App {
     private constructor() {}
 
     private static app: App = new App()
@@ -18,4 +18,8 @@ export class App {
     public getContext(): vscode.ExtensionContext | null {
         return this.context
     }
+}
+
+export {
+    App
 }

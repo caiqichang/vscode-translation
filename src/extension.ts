@@ -3,7 +3,7 @@ import * as simpleTranslate from "./command/simple-translate"
 import * as completeTranslate from "./command/complete-translate"
 import {App} from "./util/app"
 
-export const activate = (context: vscode.ExtensionContext) => {
+const activate = (context: vscode.ExtensionContext) => {
     App.instance().setContext(context);
 
     [
@@ -22,4 +22,8 @@ export const activate = (context: vscode.ExtensionContext) => {
     ].forEach(i => {
         vscode.commands.registerCommand(i.command, () => i.handler(i.command))
     })
+}
+
+export {
+    activate,
 }

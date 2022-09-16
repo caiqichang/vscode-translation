@@ -1,6 +1,15 @@
-import vscode from "vscode"
-import * as fileUtil from "../util/file-util"
+import * as common from "../util/common"
+import * as history from "../component/history"
 
-export const action = (command: String) => {
-    console.log(fileUtil.getPackageJson())
+const action = (command: string) => {
+    history.writeHistory({
+        text: "123",
+        tl: "zh-cn",
+        sl: "auto"
+    })
+    console.log("finish")
+}
+
+export {
+    action,
 }
