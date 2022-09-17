@@ -1,4 +1,4 @@
-# <img src="resources/logo.jpg" width="25"> Translator
+# <img src="resources/logo.jpg" width="30"> Translator
 
 This extension provides translation (based on [Google Translation](https://translate.google.com)) support for Visual Studio Code.
 

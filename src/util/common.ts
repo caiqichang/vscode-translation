@@ -1,8 +1,27 @@
 import vscode from "vscode"
-import * as fileUtil from "../util/file-util"
+import { App } from "../util/app"
 
 const getEditorSelection = (): string => {
     return vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection) ?? ""
+}
+
+const showError = (content: string) => {
+    vscode.window.showErrorMessage(content)
+}
+
+const showNotification = (content: string) => {
+    vscode.window.showInformationMessage(content)
+}
+
+const showStatusBar = (content: string) => {
+    vscode.window.setStatusBarMessage(content)
+}
+
+const showModal = (content: string) => {
+    vscode.window.showInformationMessage("Translation", {
+        modal: true,
+        detail: content,
+    })
 }
 
 enum MessageMode {
@@ -21,20 +40,25 @@ enum ConfigKey {
 }
 
 const readPackageJson = (): any => {
-    return fileUtil.readExtensionJsonFile("package.json")
+    App.instance().getContext()?.extension?.packageJSON
 }
 
 const configTitle = "translation"
 
-const getUserConfig = <T> (key: ConfigKey): T | null => {
+const getUserConfig = <T>(key: ConfigKey): T | null => {
     let packageConfig = readPackageJson()?.contributes?.configuration?.properties ?? {}
     let config = vscode.workspace.getConfiguration(configTitle)
     return config.get<T>(key) ?? packageConfig?.[`${configTitle}.${key}`]?.default ?? null
 }
 
 export {
+    MessageMode,
     getEditorSelection,
     ConfigKey,
     getUserConfig,
     readPackageJson,
+    showError,
+    showNotification,
+    showStatusBar,
+    showModal,
 }

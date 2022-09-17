@@ -1,5 +1,5 @@
 import fs from "fs"
-import {App} from "./app"
+import { App } from "./app"
 
 
 const readFile = (path: string): Buffer => {

@@ -1,45 +1,32 @@
-import * as fileUtil from "../util/file-util"
 import * as common from "../util/common"
+import * as translateModel from "./translate-model"
+import { App } from "../util/app"
 
-interface HistoryItem {
-    text: string,
-    sl: string,
-    tl: string,
+const key = "history"
+
+const readHistory = (): Array<translateModel.TranslateItem> => {
+    return (App.instance().getContext()?.globalState.get(key) ?? []) as Array<translateModel.TranslateItem>
 }
 
-interface HistoryFileContent {
-    history: Array<HistoryItem>,
+const writeHistoryHelper = (content: any) => {
+    App.instance().getContext()?.globalState.update(key, content)
 }
 
-const historyFilePath = "data/history.json"
-
-const readHistory = (): Array<HistoryItem> => {
-    try {
-        return (fileUtil.readExtensionJsonFile(historyFilePath) as HistoryFileContent).history
-    }catch(e) {
-        return []
-    }
-}
-
-const writeHistoryHelper = (content: string) => {
-    fileUtil.writeExtensionFile(historyFilePath, content)
-}
-
-const writeHistory = (item: HistoryItem) => {
+const writeHistory = (item: translateModel.TranslateItem) => {
     let max = common.getUserConfig<number>(common.ConfigKey.historyMax) ?? 0
-    if (max <= 0) return ;
+    if (max <= 0) return;
     let history = readHistory()
     if (history.length >= max) history.pop()
     history.unshift(item)
-    writeHistoryHelper(JSON.stringify({history}))
+    writeHistoryHelper(history)
 }
 
 const clearHistory = () => {
-    writeHistoryHelper(JSON.stringify({history: []}))
+    writeHistoryHelper([])
 }
 
 export {
-    HistoryItem,
+    key,
     readHistory,
     writeHistory,
     clearHistory,

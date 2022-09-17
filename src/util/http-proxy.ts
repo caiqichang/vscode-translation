@@ -7,8 +7,8 @@ const requestHelper = (request: http.ClientRequest, reject: (reason?: any) => vo
     request.end()
 }
 
-const responseHandler = (response: http.IncomingMessage, 
-    resolve: (value: Buffer | PromiseLike<Buffer>) => void, 
+const responseHandler = (response: http.IncomingMessage,
+    resolve: (value: Buffer | PromiseLike<Buffer>) => void,
     reject: (reason?: any) => void) => {
 
     let chunks: Array<Uint8Array> = []
@@ -33,10 +33,12 @@ const request = (url: string, options: http.RequestOptions | https.RequestOption
             })
             proxyRequest.on("connect", (response, socket) => {
 
-                let request = apiClient.request(apiUrl.href, {...options, ...{
-                    rejectUnauthorized: false,
-                    agent: new apiClient.Agent({socket}),
-                }}, response => {
+                let request = apiClient.request(apiUrl.href, {
+                    ...options, ...{
+                        rejectUnauthorized: false,
+                        agent: new apiClient.Agent({ socket }),
+                    }
+                }, response => {
                     responseHandler(response, resolve, reject)
                 })
                 if (body) request.write(body)
@@ -44,16 +46,18 @@ const request = (url: string, options: http.RequestOptions | https.RequestOption
 
             })
             requestHelper(proxyRequest, reject)
-        }else {
-            let request = apiClient.request(apiUrl.href, {...options, ...{
-                rejectUnauthorized: false,
-            }}, response => {
+        } else {
+            let request = apiClient.request(apiUrl.href, {
+                ...options, ...{
+                    rejectUnauthorized: false,
+                }
+            }, response => {
                 responseHandler(response, resolve, reject)
             })
             if (body) request.write(body)
             requestHelper(request, reject)
         }
-        
+
     })
 }
 

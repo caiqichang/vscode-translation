@@ -1,7 +1,9 @@
 import vscode from "vscode"
+import * as history from "../component/history"
+import * as bookmark from "../component/bookmark"
 
 class App {
-    private constructor() {}
+    private constructor() { }
 
     private static app: App = new App()
 
@@ -13,6 +15,10 @@ class App {
 
     public setContext(context: vscode.ExtensionContext) {
         this.context = context
+        context.globalState.setKeysForSync([
+            history.key,
+            bookmark.key,
+        ])
     }
 
     public getContext(): vscode.ExtensionContext | null {

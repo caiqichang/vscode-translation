@@ -1,7 +1,7 @@
 import vscode from "vscode"
 import * as simpleTranslate from "./command/simple-translate"
 import * as completeTranslate from "./command/complete-translate"
-import {App} from "./util/app"
+import { App } from "./util/app"
 
 const activate = (context: vscode.ExtensionContext) => {
     App.instance().setContext(context);
