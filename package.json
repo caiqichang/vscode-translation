@@ -14,7 +14,7 @@
         "translate",
         "translation"
     ],
-    "icon": "resources/vscode-translation-icon.png",
+    "icon": "resources/logo.jpg",
     "extensionKind": [
         "ui",
         "workspace"

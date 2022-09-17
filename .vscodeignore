@@ -2,6 +2,7 @@ node_modules
 package-lock.json
 build
 sound
+data
 src
 out/**/*.map
 .vscode

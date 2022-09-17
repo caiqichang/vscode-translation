@@ -1,10 +1,17 @@
-# vscode-translation
+# Translator
+
+<center>
+
+<img src="resources/logo.jpg" width="100">
 
 This extension provides translation (based on [Google Translation](https://translate.google.com)) support for Visual Studio Code.
 
 [Get from Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation)
 
+</center>
+
 ## Features
+---
 - Multiple languages translation support
 - Bookmark support
 - Pronunciation support
@@ -14,6 +21,7 @@ This extension provides translation (based on [Google Translation](https://trans
 - [Complete Translation](#complete-translation)
 
 ## Usage
+---
 ### Settings
 ```javascript
 {
@@ -157,6 +165,8 @@ This extension provides translation (based on [Google Translation](https://trans
 
 [Back to top](#features)
 
+---
+
 ### Simple Translation
 - Select text in editor and right click, choose `Simple Translate` (or use shortcut `Shift+Alt+T`),  
 and the translation for selected text will be shown in notification.
@@ -166,6 +176,8 @@ and the translation for selected text will be shown in notification.
 ![simple-translate-screenshot](resources/screenshot/simple-translate.jpg)
 
 [Back to top](#features)
+
+---
 
 ### Complete Translation
 - Select text in editor and right click, choose `Complete Translate`,

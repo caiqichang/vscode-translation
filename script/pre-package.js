@@ -1,12 +1,20 @@
-const fs = require('fs');
+const fs = require("fs")
 
 "use strict"
 
-// relatived to root path of project
-const build = 'build'
+// clear package output
+const build = "build"
 if (fs.existsSync(build)) {
     fs.rmSync(build, {
         recursive: true,
     })
 }
 fs.mkdirSync(build)
+
+// clear ts output
+const out = "out"
+if (fs.existsSync(out)) {
+    fs.rmSync(out, {
+        recursive: true,
+    })
+}
