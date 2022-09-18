@@ -27,7 +27,9 @@ interface ApiResult {
     alternative_translations?: alternative_translations[]
     src?: string
     dict?: dict[]
-    examples?: examples[]
+    examples?: examples
+    synsets?: synsets[]
+    definitions?: definitions[]
 }
 
 interface sentences {
@@ -55,7 +57,32 @@ interface dictEntry {
 }
 
 interface examples {
+    example?: example[]
+}
+
+interface example {
     text?: string
+}
+
+interface synsets {
+    pos?: string
+    entry?: synsetsEntry[]
+}
+
+interface synsetsEntry {
+    synonym?: string[]
+    definition_id?: string
+}
+
+interface definitions {
+    pos?: string
+    entry?: definitionsEntry[]
+}
+
+interface definitionsEntry {
+    gloss?: string
+    example?: string
+    definition_id?: string
 }
 
 const createQuery = (query: Map<string, string | Array<string>>): string => {
@@ -86,8 +113,8 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
         httpProxy.request(url, {
             method: "GET"
         }).then(data => {
-            let json = JSON.parse(data.toString()) as ApiResult
-            resolve(convertToTranslateResult(json))
+            let result = JSON.parse(data.toString()) as ApiResult
+            resolve(convertToTranslateResult(result))
         }).catch(e => reject(e))
     })
 }
@@ -125,7 +152,22 @@ const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => 
         })
     }
 
-    // todo
+    apiResult.definitions?.forEach(i => {
+        result.definition.push({
+            pos: i.pos,
+            entry: i.entry?.map(j => {
+                return {
+                    gloss: j.gloss,
+                    example: j.example,
+                    synonym: apiResult.synsets?.map(k => (k.pos === i.pos ? (k.entry ?? []) : []) as synsetsEntry[])
+                        .reduce((p, c) => [...p, ...c], [])
+                        .map(h => h.definition_id === j.definition_id ? (h.synonym ?? []) : [])
+                        .reduce((p, c) => [...p, ...c], [])
+                        ?? []
+                }
+            }) ?? []
+        })
+    })
 
     apiResult.dict?.forEach(i => {
         result.dictionary.push({
@@ -139,7 +181,7 @@ const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => 
         })
     })
 
-    result.example = apiResult.examples?.filter(i => i.text).map(i => i.text as string) ?? []
+    result.example = apiResult.examples?.example?.filter(i => i.text).map(i => i.text as string) ?? []
 
     return result
 }
