@@ -1,39 +1,30 @@
-import * as translateApi from "../component/translate-api"
+import * as api from "../api/index"
 import * as common from "../util/common"
 import * as history from "../component/history"
 
 const action = (command: string) => {
-    let item = {
+    let item:api.TranslateItem = {
         q: common.getEditorSelection(),
         sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
         tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
     }
 
-    translateApi.translate(item).then(result => {
+    api.translate(item).then(result => {
+        item.result = result.defaultResults.join("")
         history.writeHistory(item)
-
-        let msgArr = [
-            "🔹" + (result?.sentences?.map(i => i?.trans ?? "").join("") ?? ""),
-        ]
-
-        if (result.alternative_translations && result.alternative_translations.length > 0) {
-            result.alternative_translations[0]?.alternative?.forEach(i => {
-                if (i.word_postproc) msgArr.push(i.word_postproc)
-            })
-        }
 
         let msgType = common.getUserConfig<common.MessageMode>(common.ConfigKey.simpleDisplayMode)
         switch (msgType) {
             case common.MessageMode.notification: {
-                common.showNotification(msgArr.join("🔹"))
+                common.showNotification(item.result)
                 break;
             }
             case common.MessageMode.statusBar: {
-                common.showStatusBar(msgArr.join("🔹"))
+                common.showStatusBar(item.result)
                 break;
             }
             case common.MessageMode.modal: {
-                common.showModal(msgArr.join("\n🔹"))
+                common.showModal(result.defaultResults.join("\n"))
                 break;
             }
         }

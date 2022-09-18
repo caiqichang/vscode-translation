@@ -1,9 +1,9 @@
 import * as httpProxy from "../util/http-proxy"
-import * as translateModel from "./translate-model"
+import * as api from "./index"
 
 const apiDomain = "https://translate.googleapis.com"
 
-const translateApi = "/translate_a/single"
+const translatePath = "/translate_a/single"
 const translateDefaultQuery = new Map<string, string | Array<string>>([
     ["client", "gtx"],
     ["dj", "1"],
@@ -15,16 +15,17 @@ const translateDefaultQuery = new Map<string, string | Array<string>>([
     ["dt", ["t", "rm", "bd", "ex", "md", "ss", "at"]],
 ])
 
-const ttsApi = "/translate_tts"
+const ttsPath = "/translate_tts"
 const ttsDefaultQuery = new Map<string, string | Array<string>>([
     ["client", "gtx"],
     // input encoding
     ["ie", "utf8"],
 ])
 
-interface TranslateResult {
+interface ApiResult {
     sentences?: sentences[],
     alternative_translations?: alternative_translations[],
+    src?: string,
 }
 
 interface sentences {
@@ -53,28 +54,30 @@ const createQuery = (query: Map<string, string | Array<string>>): string => {
     return params.join("&")
 }
 
-const transParam = (item: translateModel.TranslateItem): Map<string, string> => {
+const transParam = (item: api.TranslateItem): Map<string, string> => {
     return new Map<string, string>([
         ["q", encodeURIComponent(item.q)],
         ["sl", item.sl],
         ["tl", item.tl],
+        // dictionary language
+        ["hl", item.tl],
     ])
 }
 
-const translate = (item: translateModel.TranslateItem): Promise<TranslateResult> => {
-    let url = `${apiDomain}${translateApi}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
-    return new Promise<TranslateResult>((resolve, reject) => {
+const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
+    let url = `${apiDomain}${translatePath}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
+    return new Promise<api.TranslateResult>((resolve, reject) => {
         httpProxy.request(url, {
             method: "GET"
         }).then(data => {
-            let json = JSON.parse(data.toString()) as TranslateResult
-            resolve(json)
+            let json = JSON.parse(data.toString()) as ApiResult
+            resolve(convertToTranslateResult(json))
         }).catch(e => reject(e))
     })
 }
 
-const tts = (item: translateModel.TranslateItem): Promise<Buffer> => {
-    let url = `${apiDomain}${ttsApi}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
+const tts = (item: api.TranslateItem): Promise<Buffer> => {
+    let url = `${apiDomain}${ttsPath}?${createQuery(new Map([...ttsDefaultQuery, ...transParam(item)]))}`
     return new Promise<Buffer>((resolve, reject) => {
         httpProxy.request(url, {
             method: "GET"
@@ -82,8 +85,24 @@ const tts = (item: translateModel.TranslateItem): Promise<Buffer> => {
     })
 }
 
+const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => {
+    let result: api.TranslateResult = {
+        defaultResults: [],
+    }
+
+    result.defaultResults.push(`🔹${apiResult?.sentences?.map(i => i?.trans ?? "").join("") ?? ""}`)
+    if (apiResult?.alternative_translations && apiResult?.alternative_translations.length === 1) {
+        apiResult.alternative_translations[0]?.alternative?.forEach(i => {
+            if (i.word_postproc) result.defaultResults.push(`🔹${i.word_postproc}`)
+        })
+    }
+
+    // todo
+    
+    return result
+}
+
 export {
-    TranslateResult,
     translate,
     tts,
 }
