@@ -7,24 +7,27 @@ const action = (command: string) => {
         q: common.getEditorSelection(),
         sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
         tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
+        results: [],
     }
 
     api.translate(item).then(result => {
-        item.result = result.defaultResults.join("")
+        item.results?.push(result.defaultResult)
+        if (result.alternative?.length === 1) result.alternative[0].forEach(i => item.results?.push(i))
         history.writeHistory(item)
 
+        let msgArr = item.results?.map(i => `🔹${i}`) ?? []
         let msgType = common.getUserConfig<common.MessageMode>(common.ConfigKey.simpleDisplayMode)
         switch (msgType) {
             case common.MessageMode.notification: {
-                common.showNotification(item.result)
+                common.showNotification(msgArr.join(""))
                 break;
             }
             case common.MessageMode.statusBar: {
-                common.showStatusBar(item.result)
+                common.showStatusBar(msgArr.join(""))
                 break;
             }
             case common.MessageMode.modal: {
-                common.showModal(result.defaultResults.join("\n"))
+                common.showModal(msgArr.join("\n"))
                 break;
             }
         }

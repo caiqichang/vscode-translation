@@ -23,15 +23,17 @@ const ttsDefaultQuery = new Map<string, string | Array<string>>([
 ])
 
 interface ApiResult {
-    sentences?: sentences[],
-    alternative_translations?: alternative_translations[],
-    src?: string,
+    sentences?: sentences[]
+    alternative_translations?: alternative_translations[]
+    src?: string
+    dict?: dict[]
+    examples?: examples[]
 }
 
 interface sentences {
-    trans?: string,
-    translit?: string,
-    src_translit?: string,
+    trans?: string
+    translit?: string
+    src_translit?: string
 }
 
 interface alternative_translations {
@@ -39,7 +41,21 @@ interface alternative_translations {
 }
 
 interface alternative {
-    word_postproc?: string,
+    word_postproc?: string
+}
+
+interface dict {
+    pos?: string
+    entry?: dictEntry[]
+}
+
+interface dictEntry {
+    word?: string
+    reverse_translation?: string[]
+}
+
+interface examples {
+    text?: string
 }
 
 const createQuery = (query: Map<string, string | Array<string>>): string => {
@@ -87,17 +103,43 @@ const tts = (item: api.TranslateItem): Promise<Buffer> => {
 
 const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => {
     let result: api.TranslateResult = {
-        defaultResults: [],
+        defaultResult: "",
+        alternative: [],
+        sourceLanguage: apiResult.src,
+        dictionary: [],
+        definition: [],
+        example: [],
     }
 
-    result.defaultResults.push(`🔹${apiResult?.sentences?.map(i => i?.trans ?? "").join("") ?? ""}`)
+    let srcPronounce = apiResult.sentences?.filter(i => i.src_translit).map(i => i.src_translit as string) ?? []
+    if (srcPronounce?.length > 0) result.sourcePronounce = srcPronounce[0]
+    let targetPronounce = apiResult.sentences?.filter(i => i.translit).map(i => i.translit as string) ?? []
+    if (targetPronounce?.length > 0) result.targetPronounce = targetPronounce[0]
+
+    result.defaultResult = apiResult?.sentences?.map(i => i?.trans ?? "").join("") ?? ""
     if (apiResult?.alternative_translations && apiResult?.alternative_translations.length === 1) {
-        apiResult.alternative_translations[0]?.alternative?.forEach(i => {
-            if (i.word_postproc) result.defaultResults.push(`🔹${i.word_postproc}`)
+        apiResult.alternative_translations?.forEach(i => {
+            if (i.alternative && i.alternative.length > 0) {
+                result.alternative.push(i.alternative.filter(j => j.word_postproc).map(j => j.word_postproc as string))
+            }
         })
     }
 
     // todo
+
+    apiResult.dict?.forEach(i => {
+        result.dictionary.push({
+            pos: i.pos,
+            entry: i.entry?.map(i => {
+                return {
+                    word: i.word,
+                    reserve: i.reverse_translation ?? []
+                }
+            }) ?? []
+        })
+    })
+
+    result.example = apiResult.examples?.filter(i => i.text).map(i => i.text as string) ?? []
 
     return result
 }

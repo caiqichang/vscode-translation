@@ -1,14 +1,42 @@
 import * as googleApi from "./google-api"
 
 interface TranslateItem {
-    q: string,
-    sl: string,
-    tl: string,
-    result?: string,
+    q: string
+    sl: string
+    tl: string
+    results?: string[]
 }
 
 interface TranslateResult {
-    defaultResults: string[],
+    defaultResult: string
+    alternative: string[][]
+    sourceLanguage?: string
+    sourcePronounce?: string
+    targetPronounce?: string
+    dictionary: Dictionary[]
+    definition: Definition[]
+    example: string[]
+}
+
+interface Dictionary {
+    pos?: string
+    entry?: DictionaryEntry[]
+}
+
+interface DictionaryEntry {
+    word?: string
+    reserve: string[]
+}
+
+interface Definition {
+    pos?: string
+    entry?: DefinitionEntry[]
+}
+
+interface DefinitionEntry {
+    gloss?: string
+    example?: string
+    synonym: string[]
 }
 
 const translator = googleApi
