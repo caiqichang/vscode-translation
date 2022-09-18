@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.0
+- New logo and name.
+- Enable history and bookmark synchronizing (uncompatibile update, orignal history and bookmark will be lost).
+
 ## 2.1.0
 - Remove FFmpeg section. After VSCode 1.71.0, FFmpeg is not required.
 

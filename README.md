@@ -6,8 +6,9 @@ This extension provides translation (based on [Google Translation](https://trans
 
 ## Features
 - Multiple languages translation support
-- Bookmark support
 - Pronunciation support
+- Bookmark support
+- User data synchronizing support
 - HTTP proxy support
 - [Settings](#settings)
 - [Simple Translation](#simple-translation)
