@@ -98,7 +98,7 @@ const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => 
     }
 
     // todo
-    
+
     return result
 }
 
