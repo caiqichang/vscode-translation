@@ -51,6 +51,21 @@ const getUserConfig = <T>(key: ConfigKey): T | null => {
     return config.get<T>(key) ?? packageConfig?.[`${configTitle}.${key}`]?.default ?? null
 }
 
+const createWebviewPanel = (id: string, title: string): vscode.WebviewPanel => {
+    return vscode.window.createWebviewPanel(id, title,
+        vscode.window.activeTextEditor ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active,
+        {
+            enableScripts: true,
+            enableFindWidget: true,
+            localResourceRoots: [vscode.Uri.file(App.instance().getContext()?.extensionPath ?? "")],
+        },
+    )
+}
+
+const createWebviewUri = (webviewPanel: vscode.WebviewPanel): vscode.Uri => {
+    return webviewPanel.webview.asWebviewUri(vscode.Uri.file(App.instance().getContext()?.extensionPath ?? ""))
+}
+
 export {
     MessageMode,
     getEditorSelection,
@@ -61,4 +76,6 @@ export {
     showNotification,
     showStatusBar,
     showModal,
+    createWebviewPanel,
+    createWebviewUri,
 }

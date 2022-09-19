@@ -36,4 +36,5 @@ const readExtensionJsonFile = (subpath: string): any => {
 export {
     readExtensionJsonFile,
     writeExtensionFile,
+    readExtensionFile,
 }

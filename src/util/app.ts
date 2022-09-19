@@ -5,12 +5,12 @@ import * as bookmark from "../component/bookmark"
 class App {
     private constructor() { }
 
-    private static app: App = new App()
+    private static _instance = new App()
 
     private context: vscode.ExtensionContext | null = null
 
     public static instance(): App {
-        return this.app
+        return this._instance
     }
 
     public setContext(context: vscode.ExtensionContext) {
