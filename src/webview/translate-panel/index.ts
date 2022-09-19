@@ -21,6 +21,7 @@ class TranslationPanel {
             this.panel.onDidDispose(() => this.panel = null)
             this.panel.webview.html = fileUtil.readExtensionFile("static/translation-panel.html").toString()
                 .replaceAll("${extensionPath}", common.createWebviewUri(this.panel).toString())
+                .replaceAll("${version}", Math.random())
         } else {
             if (!this.panel.visible) {
                 this.panel.reveal()
