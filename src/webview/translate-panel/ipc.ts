@@ -47,7 +47,10 @@ class TranslationIpc {
                     break;
                 }
                 case Operation.RemoveHistory: {
-                    // todo
+                    this.sendMessage({
+                        operation: Operation.RemoveHistory,
+                        parameter: history.removeHistory(message.parameter as api.TranslateItem),
+                    })
                     break;
                 }
                 case Operation.ClearHistory: {
@@ -57,16 +60,16 @@ class TranslationIpc {
                     })
                     break;
                 }
-                case Operation.SaveBookMark: {
+                case Operation.SaveBookmark: {
                     this.sendMessage({
-                        operation: Operation.SaveBookMark,
+                        operation: Operation.SaveBookmark,
                         parameter: bookmark.writeBookmark(message.parameter as api.TranslateItem),
                     })
                     break;
                 }
-                case Operation.RemoveBookMark: {
+                case Operation.RemoveBookmark: {
                     this.sendMessage({
-                        operation: Operation.RemoveBookMark,
+                        operation: Operation.RemoveBookmark,
                         parameter: bookmark.removeBookmark(message.parameter as api.TranslateItem),
                     })
                     break;
@@ -76,7 +79,10 @@ class TranslationIpc {
 
         this.sendMessage({
             operation: Operation.Init,
-            parameter: null  // todo
+            parameter: {
+                sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
+                tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
+            },
         })
     }
 
@@ -84,17 +90,24 @@ class TranslationIpc {
         this.panel?.webview?.postMessage(message)
     }
 
+    public sendTranslate(q: string) {
+        this.panel?.webview?.postMessage({
+            operation: Operation.DoTranslate,
+            parameter: q,
+        })
+    }
 }
 
 enum Operation {
+    DoTranslate = "DoTranslate",
     GetTranslation = "GetTranslation",
     GetTTS = "GetTTS",
     Init = "Init",
     SaveHistory = "SaveHistory",
     RemoveHistory = "RemoveHistory",
     ClearHistory = "ClearHistory",
-    SaveBookMark = "SaveBookMark",
-    RemoveBookMark = "RemoveBookMark",
+    SaveBookmark = "SaveBookmark",
+    RemoveBookmark = "RemoveBookmark",
 }
 
 interface Message {

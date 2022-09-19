@@ -28,9 +28,17 @@ const clearHistory = (): Array<api.TranslateItem> => {
     return []
 }
 
+const removeHistory = (item: api.TranslateItem): Array<api.TranslateItem> => {
+    let history = readHistory()
+    history = history.filter(i => !(i.q === item.q && i.sl === item.sl && i.tl === item.tl))
+    writeHistoryHelper(JSON.stringify(history))
+    return history
+}
+
 export {
     key,
     readHistory,
     writeHistory,
     clearHistory,
+    removeHistory,
 }

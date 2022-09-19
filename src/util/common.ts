@@ -62,8 +62,12 @@ const createWebviewPanel = (id: string, title: string): vscode.WebviewPanel => {
     )
 }
 
-const createWebviewUri = (webviewPanel: vscode.WebviewPanel): vscode.Uri => {
-    return webviewPanel.webview.asWebviewUri(vscode.Uri.file(App.instance().getContext()?.extensionPath ?? ""))
+const createWebviewUri = (webviewPanel: vscode.WebviewPanel, subpath: string): vscode.Uri => {
+    return webviewPanel.webview.asWebviewUri(createUri(subpath))
+}
+
+const createUri = (subpath: string): vscode.Uri => {
+    return vscode.Uri.file(`${App.instance().getContext()?.extensionPath ?? ""}${subpath}`)
 }
 
 export {
@@ -78,4 +82,5 @@ export {
     showModal,
     createWebviewPanel,
     createWebviewUri,
+    createUri,
 }
