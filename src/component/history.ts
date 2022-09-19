@@ -23,8 +23,9 @@ const writeHistory = (item: api.TranslateItem): Array<api.TranslateItem> => {
     return history
 }
 
-const clearHistory = () => {
+const clearHistory = (): Array<api.TranslateItem> => {
     writeHistoryHelper([])
+    return []
 }
 
 export {
