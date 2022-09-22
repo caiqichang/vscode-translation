@@ -3,32 +3,21 @@
 
 <head>
     <title>Translation</title>
-
     <link href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.css?v=${version}">
     <link href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.ttf?v=${version}">
     <link href="${extensionPath}/static/css/translation-panel.css?v=${version}">
-
-    <stype>
-
-    </stype>
-
 </head>
 
 <body>
 
-    <div id="app">TODO</div>
+    <div id="app" v-cloak>
+        TODO
+    </div>
 
-    <script type="module"
-        src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
+    <script type="module" src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
     <script src="${extensionPath}/node_modules/vue/dist/vue.global.js?v=${version}"></script>
     <script src="${extensionPath}/static/js/language.js?v=${version}"></script>
     <script src="${extensionPath}/static/js/translation-panel.js?v=${version}"></script>
-
-    <script>
-        "use strict"
-
-
-    </script>
 </body>
 
 </html>
