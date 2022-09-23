@@ -17,6 +17,12 @@ class TranslationIpc {
 
     private panel: vscode.WebviewPanel | null = null
 
+    private query: string | null = null
+
+    public setQuery(query: string) {
+        this.query = query
+    }
+
     public setWebview(panel: vscode.WebviewPanel) {
         this.panel = panel
         this.panel.webview.onDidReceiveMessage((message: Message) => {
@@ -28,6 +34,13 @@ class TranslationIpc {
                             parameter: result,
                         })
                     })
+                    break;
+                }
+                case Operation.Init: {
+                    if (this.query) {
+                        this.sendTranslate(this.query)
+                        this.query = null
+                    }
                     break;
                 }
                 case Operation.GetTTS: {
@@ -93,7 +106,9 @@ class TranslationIpc {
     public sendTranslate(q: string) {
         this.panel?.webview?.postMessage({
             operation: Operation.DoTranslate,
-            parameter: q,
+            parameter: {
+                q,
+            },
         })
     }
 }

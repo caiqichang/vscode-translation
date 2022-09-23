@@ -1,23 +1,107 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.css?v=${version}">
+        <link rel="stylesheet" href="${extensionPath}/static/css/translation-panel.css?v=${version}">
+    </head>
 
-<head>
-    <title>Translation</title>
-    <link href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.css?v=${version}">
-    <link href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.ttf?v=${version}">
-    <link href="${extensionPath}/static/css/translation-panel.css?v=${version}">
-</head>
+    <body>
+        <div id="app" v-cloak class="app">
+            <div class="query">
+                <div class="source">
+                    <div>
+                        <vscode-dropdown class="language" v-model="state.sl">
+                            <vscode-option v-for="i in sourceLangList" :key="i.key" :value="i.key" :title="i.label">{{i.label}}</vscode-option>
+                        </vscode-dropdown>
+                    </div>
+                    <div>
+                        <vscode-text-area class="text" rows="5" v-model="state.q"></vscode-text-area>
+                    </div>
+                    <div class="pronounce">
+                        <vscode-button appearance="icon">
+                            <span class="codicon codicon-unmute"></span>
+                        </vscode-button>
+                        <span class="pronounce-text">{{ state.result?.sourcePronounce }}</span>
+                        <span class="pronounce-text green">{{ getSourceLang() }}</span>
+                    </div>
+                </div>
 
-<body>
+                <div class="operation">
+                    <vscode-button appearance="icon" class="mark-button">
+                        <span class="codicon codicon-star-empty"></span>
+                        <!-- <span class="codicon codicon-star-full"></span> -->
+                    </vscode-button>
+                    <vscode-button appearance="icon" class="play-button" @click="getTranslate">
+                        <span class="codicon codicon-play"></span>
+                    </vscode-button>
+                    <vscode-button appearance="icon" class="swap-button">
+                        <span class="codicon codicon-arrow-swap"></span>
+                    </vscode-button>
+                </div>
 
-    <div id="app" v-cloak>
-        TODO
-    </div>
+                <div class="target">
+                    <div>
+                        <vscode-dropdown class="language" v-model="state.tl">
+                            <vscode-option v-for="i in targetLangList" :key="i.key" :value="i.key" :title="i.label">{{i.label}}</vscode-option>
+                        </vscode-dropdown>
+                    </div>
+                    <div>
+                        <vscode-text-area class="text" rows="5" v-model="state.defaultResult"></vscode-text-area>
+                    </div>
+                    <div class="pronounce">
+                        <vscode-button appearance="icon">
+                            <span class="codicon codicon-unmute"></span>
+                        </vscode-button>
+                        <span class="pronounce-text">{{ state.result?.targetPronounce }}</span>
+                    </div>
+                </div>
+            </div>
 
-    <script type="module" src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
-    <script src="${extensionPath}/node_modules/vue/dist/vue.global.js?v=${version}"></script>
-    <script src="${extensionPath}/static/js/language.js?v=${version}"></script>
-    <script src="${extensionPath}/static/js/translation-panel.js?v=${version}"></script>
-</body>
+            <vscode-divider></vscode-divider>
 
+            <div class="result">
+                <vscode-panels :activeid="state.currentTab">
+                    <vscode-panel-tab v-for="i in tabs" :id="i.id" :key="i.id" @click="state.currentTab = i.id">{{i.name}}</vscode-panel-tab>
+
+                    <vscode-panel-view aria-labelledby="history">
+                        <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="bookmark">
+                        <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="translation">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="definition">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="example">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div style="height: 800px;width: 1px;"></div>
+                        </div>
+                    </vscode-panel-view>
+                </vscode-panels>
+            </div>
+        </div>
+
+        <script type="module" src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
+        <script src="${extensionPath}/node_modules/vue/dist/vue.global.js?v=${version}"></script>
+        <script src="${extensionPath}/static/js/language.js?v=${version}"></script>
+        <script src="${extensionPath}/static/js/translation-panel.js?v=${version}"></script>
+    </body>
 </html>

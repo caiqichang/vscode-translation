@@ -1,3 +1,73 @@
 [v-cloak] {
     display: none;
 }
+
+body {
+    padding: 0 10px;
+}
+
+.green {
+    color: var(--vscode-charts-green);
+}
+
+.blue {
+    color: var(--vscode-charts-blue);
+}
+
+.app .query {
+    display: flex;
+}
+
+.app .query .operation {
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+}
+
+.app .query .source,
+.app .query .target {
+    width: calc((100% - 40px) / 2);
+}
+
+.app .query .source .language,
+.app .query .source .text,
+.app .query .target .language,
+.app .query .target .text {
+    width: 100%;
+}
+
+.app .query .source .language,
+.app .query .target .language {
+    margin-bottom: 10px;
+}
+
+.app .query .operation .mark-button {
+    margin-top: 2px;
+}
+
+.app .query .operation .play-button {
+    margin-top: 30px;
+}
+
+.app .query .operation .swap-button {
+    margin-top: 20px;
+}
+
+.app .query .source .pronounce,
+.app .query .target .pronounce {
+    display: flex;
+}
+
+.app .result .result-panel {
+    overflow: auto;
+    width: 100%;
+}
+
+.app .result .result-panel .loading {
+    width: 100%;
+}
+
+.app .query .source .pronounce .pronounce-text,
+.app .query .target .pronounce .pronounce-text {
+    margin-left: 5px;
+}

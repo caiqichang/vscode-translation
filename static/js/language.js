@@ -15,7 +15,7 @@ const LANGUAGE = {
         "yi", "hi", "su", "id", "jw", "yo", "vi"
     ],
     "enumDescriptions": [
-        "Auto", "Chinese (Simple)", "English", "Chinese (Traditional)", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
+        "Auto", "Chinese-Simple", "English", "Chinese-Traditional", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
         "Basque", "Belarusian", "Bulgarian", "Icelandic", "Polish", "Bosnian", "Persian", "Afrikaans", "Danish", "German",
         "Russian", "French", "Filipino", "Finnish", "Frisian", "Khmer", "Georgian", "Gujarati", "Kazakh", "Haitian Creole",
         "Korean", "Hausa", "Dutch", "Kyrgyz", "Galician", "Catalan", "Czech", "Kannada", "Corsican", "Croatian",
@@ -26,7 +26,7 @@ const LANGUAGE = {
         "Tajik", "Telugu", "Tamil", "Thai", "Turkish", "Turkmen", "Welsh", "Urdu", "Ukrainian", "Uzbek",
         "Spanish", "Hebrew", "Greek", "Hawaiian", "Sindhi", "Hungarian", "Shona", "Armenian", "Igbo", "Italian",
         "Yiddish", "Hindi", "Sundanese", "Indonesian", "Javanese", "Yoruba", "Vietnamese"
-    ]
+    ],
 }
 
 const SOURCE_LANGUAGE = []
