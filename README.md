@@ -164,7 +164,7 @@ and the translation for selected text will be shown in notification.
 
 - It is possiable to display the translation result in different ways (notification, modal, statusBar) by `translation.simple-display-mode`. 
 
-![simple-translate-screenshot](resources/screenshot/simple-translate.jpg)
+![simple-translate-screenshot](resources/screenshot/simple-translate.gif)
 
 [Back to top](#features)
 
@@ -174,7 +174,7 @@ and the translation for selected text will be shown in Translation panel.
 
 - The Translation panel also can be opened by command `Translation`.
 
-![complete-translate-screenshot](resources/screenshot/complete-translate.jpg)
+![complete-translate-screenshot](resources/screenshot/complete-translate.gif)
 
 [Back to top](#features)
 
