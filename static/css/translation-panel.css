@@ -95,7 +95,6 @@ body {
 .app .result .example .example-item .index {
     display: flex;
     align-items: baseline;
-    margin-bottom: 10px;
     margin-right: 5px;
 }
 
@@ -103,12 +102,31 @@ body {
     vertical-align: baseline;
 }
 
-.app .result .definition .item-pos {
+.app .result .definition .item-pos,
+.app .result .translation .item-pos {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.app .result .definition .pos-icon,
+.app .result .translation .pos-icon {
+    margin-right: 5px;
+}
+
+.app .result .translation .translation-item {
     margin-bottom: 10px;
 }
 
-.app .result .definition .pos-icon {
-    margin-right: 5px;
+.app .result .translation .translation-item-word {
+    vertical-align: baseline;
+    word-break: keep-all;
+    padding-right: 10px;
+}
+
+.to-translate {
+    cursor: pointer;
+}
+
+.to-translate:hover {
+    text-decoration: underline;
 }

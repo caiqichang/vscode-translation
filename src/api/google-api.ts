@@ -145,7 +145,7 @@ const convertToTranslateResult = (item: api.TranslateItem, apiResult: ApiResult)
     if (targetPronounce?.length > 0) result.targetPronounce = targetPronounce[0]
 
     result.defaultResult = apiResult?.sentences?.map(i => i?.trans ?? "").join("") ?? ""
-    if (apiResult?.alternative_translations && apiResult?.alternative_translations.length === 1) {
+    if (apiResult?.alternative_translations) {
         apiResult.alternative_translations?.forEach(i => {
             if (i.alternative && i.alternative.length > 0) {
                 result.alternative.push(i.alternative.filter(j => j.word_postproc).map(j => j.word_postproc as string))

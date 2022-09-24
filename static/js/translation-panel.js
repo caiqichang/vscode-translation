@@ -64,6 +64,23 @@ const app = Vue.createApp({
                 + 1 // tolerance
             return `${this.windowInnerHeight - otherHeight}px`
         },
+        doSwap() {
+            if (this.state.sl !== "auto") {
+                let sl = this.state.sl
+                this.state.sl = this.state.tl
+                this.state.tl = sl
+                if (this.state.defaultResult) {
+                    this.state.q = this.state.defaultResult
+                    this.getTranslate()
+                }
+            }
+        },
+        toTranslate(q, sl, tl) {
+            this.state.sl = sl
+            this.state.tl = tl
+            this.state.q = q
+            this.getTranslate()
+        },
         getTranslate() {
             if (this.state.q) {
                 this.loading = true

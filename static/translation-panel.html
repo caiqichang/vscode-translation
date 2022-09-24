@@ -34,7 +34,7 @@
                     <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" :disabled="!state.q">
                         <span class="codicon codicon-play"></span>
                     </vscode-button>
-                    <vscode-button appearance="icon" title="Swap" class="swap-button" :disabled="state.sl === 'auto'">
+                    <vscode-button appearance="icon" title="Swap" class="swap-button" :disabled="state.sl === 'auto'" @click="doSwap">
                         <span class="codicon codicon-arrow-swap"></span>
                     </vscode-button>
                 </div>
@@ -75,24 +75,64 @@
                         </div>
                     </vscode-panel-view>
 
-                    <vscode-panel-view aria-labelledby="translation">
+                    <vscode-panel-view aria-labelledby="translation" class="translation">
                         <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
                         <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-
+                            <div v-if="state.result?.dictionary?.length > 0">
+                                <div v-for="(i, index) in state.result.dictionary" :key="i.pos + index" class="translation-item">
+                                    <div class="green item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i.pos}}</span>
+                                    </div>
+                                    <div>
+                                        <table>
+                                            <tr v-for="(j, jIndex) in i.entry" :key="j.word + jIndex">
+                                                <td class="blue translation-item-word">
+                                                    <span class="to-translate" @click="toTranslate(j.word, state.result?.item?.tl, state.result?.sourceLanguage)">{{j.word}}</span>
+                                                </td>
+                                                <td><span v-for="k in j.reserve" :key="k" >
+                                                    <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
+                                                    <span>, </span>
+                                                </span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else-if="state.result?.alternative?.length > 0">
+                                <div v-if="state.result.alternative.length === 1">
+                                    <div v-for="i in state.result.alternative[0]" :key="i" class="item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i}}</span>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <div v-for="(i, index) in state.result.alternative" :key="index" class="translation-item">
+                                        <div class="green">{{`Part: ${index + 1}`}}</div>
+                                        <div>
+                                            <div v-for="j in i" :key="j" class="item-pos">
+                                                <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                                <span>{{j}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
                         </div>
                     </vscode-panel-view>
 
                     <vscode-panel-view aria-labelledby="definition" class="definition">
                         <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
                         <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-                            <div v-if="state.result?.definition">
+                            <div v-if="state.result?.definition?.length > 0">
                                 <div v-for="(i, index) in state.result.definition" :key="i.pos + index">
                                     <div class="green item-pos">
                                         <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
                                         <span>{{i.pos}}</span>
                                     </div>
-                                    <div v-for="(j, index) in i.entry" :key="j.gloss + index" class="definition-item">
-                                        <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div v-for="(j, jIndex) in i.entry" :key="j.gloss + jIndex" class="definition-item">
+                                        <vscode-badge class="index">{{jIndex + 1}}</vscode-badge>
                                         <div>
                                             <table>
                                                 <tr class="item-row">
@@ -105,7 +145,12 @@
                                                 </tr>
                                                 <tr class="item-row">
                                                     <td class="blue">Synonym:</td>
-                                                    <td>{{j.synonym.join()}}</td>
+                                                    <td>
+                                                        <span v-for="k in j.synonym" :key="k" >
+                                                            <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
+                                                            <span>, </span>
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -119,7 +164,7 @@
                     <vscode-panel-view aria-labelledby="example" class="example">
                         <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
                         <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-                            <div v-if="state.result?.example">
+                            <div v-if="state.result?.example?.length > 0">
                                 <div v-for="(i, index) in state.result.example" :key="i + index" class="example-item">
                                     <vscode-badge class="index">{{index + 1}}</vscode-badge>
                                     <div v-html="renderExample(i)"></div>
