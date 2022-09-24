@@ -8,6 +8,7 @@ interface TranslateItem {
 }
 
 interface TranslateResult {
+    item: TranslateItem,
     defaultResult: string
     alternative: string[][]
     sourceLanguage?: string

@@ -2,6 +2,10 @@
     display: none;
 }
 
+* {
+    font-family: "DejaVu Sans Mono";
+}
+
 body {
     padding: 0 10px;
 }
@@ -16,6 +20,7 @@ body {
 
 .app .query {
     display: flex;
+    margin-top: 10px;
 }
 
 .app .query .operation {
@@ -56,6 +61,7 @@ body {
 .app .query .source .pronounce,
 .app .query .target .pronounce {
     display: flex;
+    align-items: center;
 }
 
 .app .result .result-panel {
@@ -70,4 +76,39 @@ body {
 .app .query .source .pronounce .pronounce-text,
 .app .query .target .pronounce .pronounce-text {
     margin-left: 5px;
+}
+
+.app .result .no-data {
+    width: 100%;
+    text-align: center;
+}
+
+.app .result .definition .definition-item,
+.app .result .example .example-item {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.app .result .definition .definition-item .index,
+.app .result .example .example-item .index {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.app .result .definition .definition-item .item-row {
+    vertical-align: baseline;
+}
+
+.app .result .definition .item-pos {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.app .result .definition .pos-icon {
+    margin-right: 5px;
 }

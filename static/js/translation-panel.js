@@ -40,6 +40,9 @@ const app = Vue.createApp({
     created() {
         let state = vscode.getState()
         if (state) this.state = JSON.parse(JSON.stringify(state))
+        vscode.postMessage({
+            operation: this.Operation.Init,
+        })
     },
     watch: {
         state: {
@@ -54,10 +57,11 @@ const app = Vue.createApp({
             vscode.setState(JSON.parse(JSON.stringify(this.state)))
         },
         panelViewMaxHeight() {
-            let otherHeight = 166 // height of query
+            let otherHeight = (166 + 10) // height of query
                 + (1 + 4 * 2) // height of divider
                 + (28 + 4 * 2) // height of panel-tab
                 + (10 * 2) // top and bottom padding of panel-view
+                + 1 // tolerance
             return `${this.windowInnerHeight - otherHeight}px`
         },
         getTranslate() {
@@ -73,6 +77,31 @@ const app = Vue.createApp({
                 })
             }
         },
+        getTTS(type) {
+            if (this.state.result) {
+                let parameter = {}
+                switch (type) {
+                    case "sl": {
+                        parameter = {
+                            tl: this.state.result?.sourceLanguage,
+                            q: this.state.result?.item.q,
+                        }
+                        break;
+                    }
+                    case "tl": {
+                        parameter = {
+                            tl: this.state.result?.item.tl,
+                            q: this.state.result?.defaultResult,
+                        }
+                        break;
+                    }
+                }
+                vscode.postMessage({
+                    operation: this.Operation.GetTTS,
+                    parameter,
+                })
+            }
+        },
         getSourceLang() {
             let key = this.state.result?.sourceLanguage
             if (key) {
@@ -80,6 +109,9 @@ const app = Vue.createApp({
                 if (lang.length > 0) return `(${lang[0].label})`
             }
             return ""
+        },
+        renderExample(text) {
+            return text.replaceAll("<b>", "<code>").replaceAll("</b>", "</code>")
         },
         receiveMessage(data) {
             switch (data.operation) {
@@ -93,11 +125,16 @@ const app = Vue.createApp({
                     this.loading = false
                     this.state.result = JSON.parse(JSON.stringify(data.parameter))
                     this.state.defaultResult = data.parameter.defaultResult
+                    this.state.currentTab = "translation"
                     break;
                 }
                 case this.Operation.DoTranslate: {
                     this.state.q = data.parameter.q
                     this.getTranslate()
+                    break;
+                }
+                case this.Operation.GetTTS: {
+                    new Audio(data.parameter.url).play()
                     break;
                 }
             }

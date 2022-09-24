@@ -17,24 +17,24 @@ class TranslationPanel {
     private panel: vscode.WebviewPanel | null = null
 
     private initPanel = () => {
-        if (this.panel === null) {
-            this.panel = common.createWebviewPanel("translationPanel", "Translation")
-            this.panel.onDidDispose(() => this.panel = null)
-            this.panel.webview.html = fileUtil.readExtensionFile("static/translation-panel.html").toString()
-                .replaceAll("${extensionPath}", common.createWebviewUri(this.panel, "").toString())
-                .replaceAll("${version}", Math.random().toString())
-            this.panel.iconPath = common.createUri("/resources/logo.jpg")
-            TranslationIpc.instance().setWebview(this.panel)
-        } else {
-            if (!this.panel.visible) {
-                this.panel.reveal()
-            }
-        }
+        this.panel = common.createWebviewPanel("translationPanel", "Translation")
+        this.panel.onDidDispose(() => this.panel = null)
+        this.panel.webview.html = fileUtil.readExtensionFile("static/translation-panel.html").toString()
+            .replaceAll("${extensionPath}", common.createWebviewUri(this.panel, "").toString())
+            .replaceAll("${version}", Math.random().toString())
+        this.panel.iconPath = common.createUri("/resources/logo.jpg")
+        TranslationIpc.instance().setWebview(this.panel)
     }
 
     public showPanel = (cmd: command.CommandName) => {
-        this.initPanel()
-        if (cmd === command.CommandName.completeTranslate) {
+        let fromComplete = cmd === command.CommandName.completeTranslate
+        if (this.panel === null) {
+            if (fromComplete) TranslationIpc.instance().setQuery(common.getEditorSelection())
+            this.initPanel()
+        } else if (!this.panel.visible) {
+            if (fromComplete) TranslationIpc.instance().setQuery(common.getEditorSelection())
+            this.panel.reveal()
+        } else {
             TranslationIpc.instance().sendTranslate(common.getEditorSelection())
         }
     }

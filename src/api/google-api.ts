@@ -114,7 +114,7 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
             method: "GET"
         }).then(data => {
             let result = JSON.parse(data.toString()) as ApiResult
-            resolve(convertToTranslateResult(result))
+            resolve(convertToTranslateResult(item, result))
         }).catch(e => reject(e))
     })
 }
@@ -128,8 +128,9 @@ const tts = (item: api.TranslateItem): Promise<Buffer> => {
     })
 }
 
-const convertToTranslateResult = (apiResult: ApiResult): api.TranslateResult => {
+const convertToTranslateResult = (item: api.TranslateItem, apiResult: ApiResult): api.TranslateResult => {
     let result: api.TranslateResult = {
+        item,
         defaultResult: "",
         alternative: [],
         sourceLanguage: apiResult.src,

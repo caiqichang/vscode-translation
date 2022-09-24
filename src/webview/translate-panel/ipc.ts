@@ -3,6 +3,7 @@ import * as history from "../../component/history"
 import * as bookmark from "../../component/bookmark"
 import * as api from "../../api/index"
 import * as common from "../../util/common"
+import * as fileUtil from "../../util/file-util"
 
 class TranslationIpc {
     private constructor() {
@@ -44,11 +45,17 @@ class TranslationIpc {
                     break;
                 }
                 case Operation.GetTTS: {
-                    api.tts(message.parameter as api.TranslateItem).then(() => {
-                        this.sendMessage({
-                            operation: Operation.GetTTS,
-                            parameter: null,
-                        })
+                    api.tts(message.parameter as api.TranslateItem).then(data => {
+                        let file = "/temp/tts.mp3"
+                        fileUtil.writeExtensionFile(file, data)
+                        if (this.panel) {
+                            this.sendMessage({
+                                operation: Operation.GetTTS,
+                                parameter: {
+                                    url: `${common.createWebviewUri(this.panel, file)}?v=${Math.random()}`,
+                                },
+                            })
+                        }
                     })
                     break;
                 }

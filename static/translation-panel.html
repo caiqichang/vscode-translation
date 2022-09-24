@@ -18,7 +18,7 @@
                         <vscode-text-area class="text" rows="5" v-model="state.q"></vscode-text-area>
                     </div>
                     <div class="pronounce">
-                        <vscode-button appearance="icon">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('sl')" :disabled="!state.result">
                             <span class="codicon codicon-unmute"></span>
                         </vscode-button>
                         <span class="pronounce-text">{{ state.result?.sourcePronounce }}</span>
@@ -27,14 +27,14 @@
                 </div>
 
                 <div class="operation">
-                    <vscode-button appearance="icon" class="mark-button">
+                    <vscode-button appearance="icon" class="mark-button" :disabled="!state.q">
                         <span class="codicon codicon-star-empty"></span>
                         <!-- <span class="codicon codicon-star-full"></span> -->
                     </vscode-button>
-                    <vscode-button appearance="icon" class="play-button" @click="getTranslate">
+                    <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" :disabled="!state.q">
                         <span class="codicon codicon-play"></span>
                     </vscode-button>
-                    <vscode-button appearance="icon" class="swap-button">
+                    <vscode-button appearance="icon" title="Swap" class="swap-button" :disabled="state.sl === 'auto'">
                         <span class="codicon codicon-arrow-swap"></span>
                     </vscode-button>
                 </div>
@@ -49,7 +49,7 @@
                         <vscode-text-area class="text" rows="5" v-model="state.defaultResult"></vscode-text-area>
                     </div>
                     <div class="pronounce">
-                        <vscode-button appearance="icon">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('tl')" :disabled="!state.result">
                             <span class="codicon codicon-unmute"></span>
                         </vscode-button>
                         <span class="pronounce-text">{{ state.result?.targetPronounce }}</span>
@@ -82,17 +82,50 @@
                         </div>
                     </vscode-panel-view>
 
-                    <vscode-panel-view aria-labelledby="definition">
+                    <vscode-panel-view aria-labelledby="definition" class="definition">
                         <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
                         <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-
+                            <div v-if="state.result?.definition">
+                                <div v-for="(i, index) in state.result.definition" :key="i.pos + index">
+                                    <div class="green item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i.pos}}</span>
+                                    </div>
+                                    <div v-for="(j, index) in i.entry" :key="j.gloss + index" class="definition-item">
+                                        <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                        <div>
+                                            <table>
+                                                <tr class="item-row">
+                                                    <td class="blue">Definition:</td>
+                                                    <td>{{j.gloss}}</td>
+                                                </tr>
+                                                <tr class="item-row">
+                                                    <td class="blue">Example:</td>
+                                                    <td>{{j.example}}</td>
+                                                </tr>
+                                                <tr class="item-row">
+                                                    <td class="blue">Synonym:</td>
+                                                    <td>{{j.synonym.join()}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
                         </div>
                     </vscode-panel-view>
 
-                    <vscode-panel-view aria-labelledby="example">
+                    <vscode-panel-view aria-labelledby="example" class="example">
                         <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
                         <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-                            <div style="height: 800px;width: 1px;"></div>
+                            <div v-if="state.result?.example">
+                                <div v-for="(i, index) in state.result.example" :key="i + index" class="example-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div v-html="renderExample(i)"></div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
                         </div>
                     </vscode-panel-view>
                 </vscode-panels>
