@@ -32,8 +32,8 @@ class TranslationPanel {
             if (fromComplete) TranslationIpc.instance().setQuery(common.getEditorSelection())
             this.initPanel()
         } else if (!this.panel.visible) {
-            if (fromComplete) TranslationIpc.instance().setQuery(common.getEditorSelection())
             this.panel.reveal()
+            TranslationIpc.instance().sendTranslate(common.getEditorSelection())
         } else {
             TranslationIpc.instance().sendTranslate(common.getEditorSelection())
         }

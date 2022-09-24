@@ -20,4 +20,4 @@ tsconfig.json
 !node_modules/@vscode/codicons/dist/codicon.css
 !node_modules/@vscode/codicons/dist/codicon.ttf
 
-!node_modules/vue/dist/vue.global.js
+!node_modules/vue/dist/vue.global.prod.js

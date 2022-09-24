@@ -35,22 +35,13 @@ const app = Vue.createApp({
                 currentTab: "history",
             },
             loading: false,
+            hasInit: false,
         }
     },
     created() {
-        let state = vscode.getState()
-        if (state) this.state = JSON.parse(JSON.stringify(state))
         vscode.postMessage({
             operation: this.Operation.Init,
         })
-    },
-    watch: {
-        state: {
-            deep: true,
-            handler(newValue) {
-                this.setState(JSON.parse(JSON.stringify(newValue)))
-            },
-        },
     },
     methods: {
         setState() {
@@ -138,11 +129,13 @@ const app = Vue.createApp({
                     break;
                 }
                 case this.Operation.GetTranslation: {
-                    console.log(data.parameter)
                     this.loading = false
                     this.state.result = JSON.parse(JSON.stringify(data.parameter))
                     this.state.defaultResult = data.parameter.defaultResult
                     this.state.currentTab = "translation"
+                    if (data.parameter.sourceLanguage) {
+                        this.state.sl = data.parameter.sourceLanguage
+                    }
                     break;
                 }
                 case this.Operation.DoTranslate: {

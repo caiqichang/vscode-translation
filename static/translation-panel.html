@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="operation">
-                    <vscode-button appearance="icon" class="mark-button" :disabled="!state.q">
+                    <vscode-button appearance="icon" class="mark-button" ref="markButton" :disabled="!state.q">
                         <span class="codicon codicon-star-empty"></span>
                         <!-- <span class="codicon codicon-star-full"></span> -->
                     </vscode-button>
@@ -90,9 +90,9 @@
                                                 <td class="blue translation-item-word">
                                                     <span class="to-translate" @click="toTranslate(j.word, state.result?.item?.tl, state.result?.sourceLanguage)">{{j.word}}</span>
                                                 </td>
-                                                <td><span v-for="k in j.reserve" :key="k" >
+                                                <td><span v-for="(k, kIndex) in j.reserve" :key="k" >
                                                     <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
-                                                    <span>, </span>
+                                                    <span v-if="kIndex !== j.reserve.length - 1">, </span>
                                                 </span></td>
                                             </tr>
                                         </table>
@@ -146,9 +146,9 @@
                                                 <tr class="item-row">
                                                     <td class="blue">Synonym:</td>
                                                     <td>
-                                                        <span v-for="k in j.synonym" :key="k" >
+                                                        <span v-for="(k, kIndex) in j.synonym" :key="k" >
                                                             <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
-                                                            <span>, </span>
+                                                            <span v-if="kIndex !== j.synonym.length - 1">, </span>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -178,7 +178,7 @@
         </div>
 
         <script type="module" src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
-        <script src="${extensionPath}/node_modules/vue/dist/vue.global.js?v=${version}"></script>
+        <script src="${extensionPath}/node_modules/vue/dist/vue.global.prod.js?v=${version}"></script>
         <script src="${extensionPath}/static/js/language.js?v=${version}"></script>
         <script src="${extensionPath}/static/js/translation-panel.js?v=${version}"></script>
     </body>

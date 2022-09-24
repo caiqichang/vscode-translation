@@ -57,6 +57,7 @@ const createWebviewPanel = (id: string, title: string): vscode.WebviewPanel => {
         {
             enableScripts: true,
             enableFindWidget: true,
+            retainContextWhenHidden: true,
             localResourceRoots: [vscode.Uri.file(App.instance().getContext()?.extensionPath ?? "")],
         },
     )

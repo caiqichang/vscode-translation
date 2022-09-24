@@ -3,7 +3,8 @@
 }
 
 * {
-    font-family: "DejaVu Sans Mono";
+    font-family: var(--vscode-editor-font-family);
+    font-size: var(--vscode-editor-font-size);
 }
 
 body {
@@ -51,11 +52,11 @@ body {
 }
 
 .app .query .operation .play-button {
-    margin-top: 30px;
+    margin-top: 29px;
 }
 
 .app .query .operation .swap-button {
-    margin-top: 20px;
+    margin-top: 17px;
 }
 
 .app .query .source .pronounce,
@@ -69,7 +70,7 @@ body {
     width: 100%;
 }
 
-.app .result .result-panel .loading {
+.app .result .loading {
     width: 100%;
 }
 
