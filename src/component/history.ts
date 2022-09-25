@@ -8,7 +8,7 @@ const readHistory = (): Array<api.TranslateItem> => {
     return (App.instance().getContext()?.globalState.get(key) ?? []) as Array<api.TranslateItem>
 }
 
-const writeHistoryHelper = (content: any) => {
+const writeHistoryHelper = (content: Array<api.TranslateItem>) => {
     App.instance().getContext()?.globalState.update(key, content)
 }
 
@@ -31,8 +31,12 @@ const clearHistory = (): Array<api.TranslateItem> => {
 const removeHistory = (item: api.TranslateItem): Array<api.TranslateItem> => {
     let history = readHistory()
     history = history.filter(i => !(i.q === item.q && i.sl === item.sl && i.tl === item.tl))
-    writeHistoryHelper(JSON.stringify(history))
+    writeHistoryHelper(history)
     return history
+}
+
+const exportHistory = () => {
+    common.exportToFile(JSON.stringify(readHistory(), null, 4), "history.json")
 }
 
 export {
@@ -41,4 +45,5 @@ export {
     writeHistory,
     clearHistory,
     removeHistory,
+    exportHistory,
 }

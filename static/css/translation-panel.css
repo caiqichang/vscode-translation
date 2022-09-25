@@ -85,6 +85,8 @@ body {
 }
 
 .app .result .definition .definition-item,
+.app .result .history .history-item,
+.app .result .bookmark .bookmark-item,
 .app .result .example .example-item {
     display: flex;
     align-items: baseline;
@@ -93,6 +95,8 @@ body {
 }
 
 .app .result .definition .definition-item .index,
+.app .result .history .history-item .index,
+.app .result .bookmark .bookmark-item .index,
 .app .result .example .example-item .index {
     display: flex;
     align-items: baseline;
@@ -107,6 +111,13 @@ body {
 .app .result .translation .item-pos {
     display: flex;
     align-items: flex-start;
+}
+
+.app .result .history .item-pos,
+.app .result .bookmark .item-pos {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
 }
 
 .app .result .definition .pos-icon,
@@ -130,4 +141,26 @@ body {
 
 .to-translate:hover {
     text-decoration: underline;
+}
+
+.app .history .button,
+.app .bookmark .button {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.app .history .history-item .item-content,
+.app .bookmark .bookmark-item .item-content {
+    display: flex;
+    align-items: center;
+}
+
+.app .history .history-item .item-content .item-word,
+.app .bookmark .bookmark-item .item-content .item-word {
+    margin-right: 5px;
+}
+
+.app .history .history-item .item-content .remove-button,
+.app .bookmark .bookmark-item .item-content .remove-button {
+    margin-right: 10px;
 }

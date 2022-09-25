@@ -1,5 +1,6 @@
 import vscode from "vscode"
 import { App } from "../util/app"
+import * as fileUtil from "../util/file-util"
 
 const getEditorSelection = (): string => {
     return vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection) ?? ""
@@ -71,6 +72,20 @@ const createUri = (subpath: string): vscode.Uri => {
     return vscode.Uri.file(`${App.instance().getContext()?.extensionPath ?? ""}${subpath}`)
 }
 
+const exportToFile = (content: string, fileName: string) => {
+    vscode.window.showOpenDialog({
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+    }).then(uri => {
+        if (uri && uri.length > 0) {
+            let path = `${uri[0].fsPath}/${fileName}`
+            fileUtil.writeFile(path, content)
+            showNotification(`Export to file ${path}`)
+        }
+    })
+}
+
 export {
     MessageMode,
     getEditorSelection,
@@ -84,4 +99,5 @@ export {
     createWebviewPanel,
     createWebviewUri,
     createUri,
+    exportToFile,
 }

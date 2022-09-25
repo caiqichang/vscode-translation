@@ -28,8 +28,8 @@
 
                 <div class="operation">
                     <vscode-button appearance="icon" class="mark-button" ref="markButton" :disabled="!state.q">
-                        <span class="codicon codicon-star-empty"></span>
-                        <!-- <span class="codicon codicon-star-full"></span> -->
+                        <span v-if="!inBookmark()" @click="saveBookmark" class="codicon codicon-star-empty"></span>
+                        <span v-else @click="removeBookmark({q: state.q, sl: state.sl, tl: state.tl})" class="codicon codicon-star-full"></span>
                     </vscode-button>
                     <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" :disabled="!state.q">
                         <span class="codicon codicon-play"></span>
@@ -63,15 +63,52 @@
                 <vscode-panels :activeid="state.currentTab">
                     <vscode-panel-tab v-for="i in tabs" :id="i.id" :key="i.id" @click="state.currentTab = i.id">{{i.name}}</vscode-panel-tab>
 
-                    <vscode-panel-view aria-labelledby="history">
+                    <vscode-panel-view aria-labelledby="history" class="history">
                         <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-
+                            <div v-if="state.history?.length > 0">
+                                <div>
+                                    <vscode-button class="button" @click="clearHistory"><span slot="start" class="codicon codicon-trash"></span>Clear</vscode-button>
+                                    <vscode-button class="button" @click="exportHistory"><span slot="start" class="codicon codicon-cloud-download"></span>Export</vscode-button>
+                                </div>
+                                <div v-for="(i, index) in state.history" :key="(i.q + i.sl + i.tl) + index" class="history-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div class="item-content">
+                                        <div class="to-translate item-word blue" @click="toTranslate(i.q, i.sl, i.tl)">{{ i.q }}</div>
+                                        <vscode-button class="remove-button" appearance="icon" title="Remove" @click="removeHistory(i)">
+                                            <span class="codicon codicon-close"></span>
+                                        </vscode-button>
+                                        <span v-for="j in i.results" :key="j" class="item-pos">
+                                            <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                            <span>{{j}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
                         </div>
                     </vscode-panel-view>
 
-                    <vscode-panel-view aria-labelledby="bookmark">
+                    <vscode-panel-view aria-labelledby="bookmark" class="bookmark">
                         <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
-
+                            <div v-if="state.bookmark?.length > 0">
+                                <div>
+                                    <vscode-button class="button" @click="exportBookmark"><span slot="start" class="codicon codicon-cloud-download"></span>Export</vscode-button>
+                                </div>
+                                <div v-for="(i, index) in state.bookmark" :key="(i.q + i.sl + i.tl) + index" class="bookmark-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div class="item-content">
+                                        <div class="to-translate item-word blue" @click="toTranslate(i.q, i.sl, i.tl)">{{ i.q }}</div>
+                                        <vscode-button class="remove-button" appearance="icon" title="Remove" @click="removeBookmark(i)">
+                                            <span class="codicon codicon-close"></span>
+                                        </vscode-button>
+                                        <span v-for="j in i.results" :key="j" class="item-pos">
+                                            <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                            <span>{{j}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
                         </div>
                     </vscode-panel-view>
 

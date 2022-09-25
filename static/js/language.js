@@ -39,8 +39,8 @@ LANGUAGE.enum.forEach((i, index) => {
 })
 SOURCE_LANGUAGE.sort((l, r) => l.label.localeCompare(r.label))
 SOURCE_LANGUAGE.unshift({
-    key: 'auto',
-    label: 'Auto',
+    key: "auto",
+    label: "Auto",
 })
 
 const TARGET_LANGUAGE = []

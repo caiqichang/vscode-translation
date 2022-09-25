@@ -2,6 +2,10 @@
 
 const vscode = acquireVsCodeApi()
 
+const copy = (obj) => {
+    return JSON.parse(JSON.stringify(obj))
+}
+
 const app = Vue.createApp({
     data() {
         return {
@@ -18,6 +22,8 @@ const app = Vue.createApp({
                 ClearHistory: "ClearHistory",
                 SaveBookmark: "SaveBookmark",
                 RemoveBookmark: "RemoveBookmark",
+                ExportHistory: "ExportHistory",
+                ExportBookmark: "ExportBookmark",
             },
             tabs: [
                 { id: "history", name: "History" },
@@ -33,6 +39,8 @@ const app = Vue.createApp({
                 defaultResult: null,
                 result: null,
                 currentTab: "history",
+                history: [],
+                bookmark: [],
             },
             loading: false,
             hasInit: false,
@@ -41,11 +49,12 @@ const app = Vue.createApp({
     created() {
         vscode.postMessage({
             operation: this.Operation.Init,
+            parameter: {},
         })
     },
     methods: {
         setState() {
-            vscode.setState(JSON.parse(JSON.stringify(this.state)))
+            vscode.setState(copy(this.state))
         },
         panelViewMaxHeight() {
             let otherHeight = (166 + 10) // height of query
@@ -75,6 +84,7 @@ const app = Vue.createApp({
         getTranslate() {
             if (this.state.q) {
                 this.loading = true
+                this.state.currentTab = "translation"
                 vscode.postMessage({
                     operation: this.Operation.GetTranslation,
                     parameter: {
@@ -121,6 +131,59 @@ const app = Vue.createApp({
         renderExample(text) {
             return text.replaceAll("<b>", "<code>").replaceAll("</b>", "</code>")
         },
+        saveHistory() {
+            if (this.state.result) {
+                vscode.postMessage({
+                    operation: this.Operation.SaveHistory,
+                    parameter: copy(this.state.result.item),
+                })
+            }
+        },
+        clearHistory() {
+            vscode.postMessage({
+                operation: this.Operation.ClearHistory,
+                parameter: [],
+            })
+        },
+        removeHistory(item) {
+            vscode.postMessage({
+                operation: this.Operation.RemoveHistory,
+                parameter: copy(item),
+            })
+        },
+        exportHistory() {
+            vscode.postMessage({
+                operation: this.Operation.ExportHistory,
+                parameter: [],
+            })
+        },
+        saveBookmark() {
+            if (this.state.result) {
+                vscode.postMessage({
+                    operation: this.Operation.SaveBookmark,
+                    parameter: copy(this.state.result.item),
+                })
+            }
+        },
+        removeBookmark(item) {
+            vscode.postMessage({
+                operation: this.Operation.RemoveBookmark,
+                parameter: copy(item),
+            })
+        },
+        exportBookmark() {
+            vscode.postMessage({
+                operation: this.Operation.ExportBookmark,
+                parameter: [],
+            })
+        },
+        inBookmark() {
+            for (let i = 0; i < this.state.bookmark.length; i++) {
+                let item = this.state.bookmark[i]
+                if (this.state.q === item.q && this.state.sl === item.sl && this.state.tl === item.tl) return true
+            }
+            return false
+        },
         receiveMessage(data) {
             switch (data.operation) {
                 case this.Operation.Init: {
@@ -130,12 +193,12 @@ const app = Vue.createApp({
                 }
                 case this.Operation.GetTranslation: {
                     this.loading = false
-                    this.state.result = JSON.parse(JSON.stringify(data.parameter))
+                    this.state.result = copy(data.parameter)
                     this.state.defaultResult = data.parameter.defaultResult
-                    this.state.currentTab = "translation"
                     if (data.parameter.sourceLanguage) {
                         this.state.sl = data.parameter.sourceLanguage
                     }
+                    this.saveHistory()
                     break;
                 }
                 case this.Operation.DoTranslate: {
@@ -145,6 +208,17 @@ const app = Vue.createApp({
                 }
                 case this.Operation.GetTTS: {
                     new Audio(data.parameter.url).play()
+                    break;
+                }
+                case this.Operation.RemoveHistory:
+                case this.Operation.ClearHistory:
+                case this.Operation.SaveHistory: {
+                    this.state.history = data.parameter
+                    break;
+                }
+                case this.Operation.RemoveBookmark:
+                case this.Operation.SaveBookmark: {
+                    this.state.bookmark = data.parameter
                     break;
                 }
             }

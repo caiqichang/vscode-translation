@@ -12,9 +12,7 @@ const action = (command: command.CommandName) => {
     }
 
     api.translate(item).then(result => {
-        item.results?.push(result.defaultResult)
-        if (result.alternative?.length === 1) result.alternative[0].forEach(i => item.results?.push(i))
-        history.writeHistory(item)
+        history.writeHistory(result.item)
 
         let msgArr = item.results?.map(i => `🔹${i}`) ?? []
         let msgType = common.getUserConfig<common.MessageMode>(common.ConfigKey.simpleDisplayMode)

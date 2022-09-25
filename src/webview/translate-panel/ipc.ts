@@ -38,6 +38,14 @@ class TranslationIpc {
                     break;
                 }
                 case Operation.Init: {
+                    this.sendMessage({
+                        operation: Operation.SaveHistory,
+                        parameter: history.readHistory(),
+                    })
+                    this.sendMessage({
+                        operation: Operation.SaveBookmark,
+                        parameter: bookmark.readBookmark(),
+                    })
                     if (this.query) {
                         this.sendTranslate(this.query)
                         this.query = null
@@ -80,6 +88,10 @@ class TranslationIpc {
                     })
                     break;
                 }
+                case Operation.ExportHistory: {
+                    history.exportHistory()
+                    break;
+                }
                 case Operation.SaveBookmark: {
                     this.sendMessage({
                         operation: Operation.SaveBookmark,
@@ -92,6 +104,10 @@ class TranslationIpc {
                         operation: Operation.RemoveBookmark,
                         parameter: bookmark.removeBookmark(message.parameter as api.TranslateItem),
                     })
+                    break;
+                }
+                case Operation.ExportBookmark: {
+                    bookmark.exportBookmark()
                     break;
                 }
             }
@@ -130,6 +146,8 @@ enum Operation {
     ClearHistory = "ClearHistory",
     SaveBookmark = "SaveBookmark",
     RemoveBookmark = "RemoveBookmark",
+    ExportHistory = "ExportHistory",
+    ExportBookmark = "ExportBookmark",
 }
 
 interface Message {
