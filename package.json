@@ -1,19 +1,20 @@
 {
     "name": "vscode-translation",
-    "displayName": "Translation",
+    "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "engines": {
-        "vscode": "^1.69.1"
+        "vscode": "^1.71.0"
     },
     "categories": [
         "Other"
     ],
     "keywords": [
-        "translate"
+        "translate",
+        "translation"
     ],
-    "icon": "resources/vscode-translation-icon.png",
+    "icon": "resources/logo.jpg",
     "extensionKind": [
         "ui",
         "workspace"
@@ -27,7 +28,7 @@
         "type": "git",
         "url": "https://github.com/caiqichang/vscode-translation"
     },
-    "main": "extension.js",
+    "main": "out/extension.js",
     "activationEvents": [
         "onCommand:simpleTranslate",
         "onCommand:completeTranslate",
@@ -121,15 +122,19 @@
         ]
     },
     "scripts": {
-        "prepackage": "node script/pre-package.js",
-        "package": "npx --package vsce vsce package -o build/"
+        "prepackage": "node script/pre-package.js && npm run compile",
+        "package": "npx --package vsce vsce package -o build/",
+        "compile": "tsc --project ./",
+        "watch": "tsc --watch --project ./"
     },
     "devDependencies": {
-        "@types/node": "^18.6.4",
-        "@types/vscode": "^1.69.1"
+        "@types/node": "^18.7.18",
+        "@types/vscode": "^1.71.0",
+        "typescript": "^4.8.3"
     },
     "dependencies": {
         "@vscode/codicons": "^0.0.32",
-        "@vscode/webview-ui-toolkit": "^1.0.0"
+        "@vscode/webview-ui-toolkit": "^1.1.0",
+        "vue": "^3.2.39"
     }
 }

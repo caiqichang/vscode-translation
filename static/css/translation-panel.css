@@ -1,0 +1,166 @@
+[v-cloak] {
+    display: none;
+}
+
+* {
+    font-family: var(--vscode-editor-font-family);
+    font-size: var(--vscode-editor-font-size);
+}
+
+body {
+    padding: 0 10px;
+}
+
+.green {
+    color: var(--vscode-charts-green);
+}
+
+.blue {
+    color: var(--vscode-charts-blue);
+}
+
+.app .query {
+    display: flex;
+    margin-top: 10px;
+}
+
+.app .query .operation {
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+}
+
+.app .query .source,
+.app .query .target {
+    width: calc((100% - 40px) / 2);
+}
+
+.app .query .source .language,
+.app .query .source .text,
+.app .query .target .language,
+.app .query .target .text {
+    width: 100%;
+}
+
+.app .query .source .language,
+.app .query .target .language {
+    margin-bottom: 10px;
+}
+
+.app .query .operation .mark-button {
+    margin-top: 2px;
+}
+
+.app .query .operation .play-button {
+    margin-top: 29px;
+}
+
+.app .query .operation .swap-button {
+    margin-top: 17px;
+}
+
+.app .query .source .pronounce,
+.app .query .target .pronounce {
+    display: flex;
+    align-items: center;
+}
+
+.app .result .result-panel {
+    overflow: auto;
+    width: 100%;
+}
+
+.app .result .loading {
+    width: 100%;
+}
+
+.app .query .source .pronounce .pronounce-text,
+.app .query .target .pronounce .pronounce-text {
+    margin-left: 5px;
+}
+
+.app .result .no-data {
+    width: 100%;
+    text-align: center;
+}
+
+.app .result .definition .definition-item,
+.app .result .history .history-item,
+.app .result .bookmark .bookmark-item,
+.app .result .example .example-item {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.app .result .definition .definition-item .index,
+.app .result .history .history-item .index,
+.app .result .bookmark .bookmark-item .index,
+.app .result .example .example-item .index {
+    display: flex;
+    align-items: baseline;
+    margin-right: 5px;
+}
+
+.app .result .definition .definition-item .item-row {
+    vertical-align: baseline;
+}
+
+.app .result .definition .item-pos,
+.app .result .translation .item-pos {
+    display: flex;
+    align-items: flex-start;
+}
+
+.app .result .history .item-pos,
+.app .result .bookmark .item-pos {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.app .result .definition .pos-icon,
+.app .result .translation .pos-icon {
+    margin-right: 5px;
+}
+
+.app .result .translation .translation-item {
+    margin-bottom: 10px;
+}
+
+.app .result .translation .translation-item-word {
+    vertical-align: baseline;
+    word-break: keep-all;
+    padding-right: 10px;
+}
+
+.to-translate {
+    cursor: pointer;
+}
+
+.to-translate:hover {
+    text-decoration: underline;
+}
+
+.app .history .button,
+.app .bookmark .button {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.app .history .history-item .item-content,
+.app .bookmark .bookmark-item .item-content {
+    display: flex;
+    align-items: center;
+}
+
+.app .history .history-item .item-content .item-word,
+.app .bookmark .bookmark-item .item-content .item-word {
+    margin-right: 5px;
+}
+
+.app .history .history-item .item-content .remove-button,
+.app .bookmark .bookmark-item .item-content .remove-button {
+    margin-right: 10px;
+}

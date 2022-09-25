@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="${extensionPath}/node_modules/@vscode/codicons/dist/codicon.css?v=${version}">
+        <link rel="stylesheet" href="${extensionPath}/static/css/translation-panel.css?v=${version}">
+    </head>
+
+    <body>
+        <div id="app" v-cloak class="app">
+            <div class="query">
+                <div class="source">
+                    <div>
+                        <vscode-dropdown class="language" v-model="state.sl">
+                            <vscode-option v-for="i in sourceLangList" :key="i.key" :value="i.key" :title="i.label">{{i.label}}</vscode-option>
+                        </vscode-dropdown>
+                    </div>
+                    <div>
+                        <vscode-text-area class="text" rows="5" v-model="state.q"></vscode-text-area>
+                    </div>
+                    <div class="pronounce">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('sl')" :disabled="!state.result">
+                            <span class="codicon codicon-unmute"></span>
+                        </vscode-button>
+                        <span class="pronounce-text">{{ state.result?.sourcePronounce }}</span>
+                        <span class="pronounce-text green">{{ getSourceLang() }}</span>
+                    </div>
+                </div>
+
+                <div class="operation">
+                    <vscode-button appearance="icon" class="mark-button" ref="markButton" :disabled="!state.q">
+                        <span v-if="!inBookmark()" @click="saveBookmark" class="codicon codicon-star-empty"></span>
+                        <span v-else @click="removeBookmark({q: state.q, sl: state.sl, tl: state.tl})" class="codicon codicon-star-full"></span>
+                    </vscode-button>
+                    <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" :disabled="!state.q">
+                        <span class="codicon codicon-play"></span>
+                    </vscode-button>
+                    <vscode-button appearance="icon" title="Swap" class="swap-button" :disabled="state.sl === 'auto'" @click="doSwap">
+                        <span class="codicon codicon-arrow-swap"></span>
+                    </vscode-button>
+                </div>
+
+                <div class="target">
+                    <div>
+                        <vscode-dropdown class="language" v-model="state.tl">
+                            <vscode-option v-for="i in targetLangList" :key="i.key" :value="i.key" :title="i.label">{{i.label}}</vscode-option>
+                        </vscode-dropdown>
+                    </div>
+                    <div>
+                        <vscode-text-area class="text" rows="5" v-model="state.defaultResult"></vscode-text-area>
+                    </div>
+                    <div class="pronounce">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('tl')" :disabled="!state.result">
+                            <span class="codicon codicon-unmute"></span>
+                        </vscode-button>
+                        <span class="pronounce-text">{{ state.result?.targetPronounce }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <vscode-divider></vscode-divider>
+
+            <div class="result">
+                <vscode-panels :activeid="state.currentTab">
+                    <vscode-panel-tab v-for="i in tabs" :id="i.id" :key="i.id" @click="state.currentTab = i.id">{{i.name}}</vscode-panel-tab>
+
+                    <vscode-panel-view aria-labelledby="history" class="history">
+                        <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div v-if="state.history?.length > 0">
+                                <div>
+                                    <vscode-button class="button" @click="clearHistory"><span slot="start" class="codicon codicon-trash"></span>Clear</vscode-button>
+                                    <vscode-button class="button" @click="exportHistory"><span slot="start" class="codicon codicon-cloud-download"></span>Export</vscode-button>
+                                </div>
+                                <div v-for="(i, index) in state.history" :key="(i.q + i.sl + i.tl) + index" class="history-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div class="item-content">
+                                        <div class="to-translate item-word blue" @click="toTranslate(i.q, i.sl, i.tl)">{{ i.q }}</div>
+                                        <vscode-button class="remove-button" appearance="icon" title="Remove" @click="removeHistory(i)">
+                                            <span class="codicon codicon-close"></span>
+                                        </vscode-button>
+                                        <span v-for="j in i.results" :key="j" class="item-pos">
+                                            <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                            <span>{{j}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="bookmark" class="bookmark">
+                        <div class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div v-if="state.bookmark?.length > 0">
+                                <div>
+                                    <vscode-button class="button" @click="exportBookmark"><span slot="start" class="codicon codicon-cloud-download"></span>Export</vscode-button>
+                                </div>
+                                <div v-for="(i, index) in state.bookmark" :key="(i.q + i.sl + i.tl) + index" class="bookmark-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div class="item-content">
+                                        <div class="to-translate item-word blue" @click="toTranslate(i.q, i.sl, i.tl)">{{ i.q }}</div>
+                                        <vscode-button class="remove-button" appearance="icon" title="Remove" @click="removeBookmark(i)">
+                                            <span class="codicon codicon-close"></span>
+                                        </vscode-button>
+                                        <span v-for="j in i.results" :key="j" class="item-pos">
+                                            <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                            <span>{{j}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="translation" class="translation">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div v-if="state.result?.dictionary?.length > 0">
+                                <div v-for="(i, index) in state.result.dictionary" :key="i.pos + index" class="translation-item">
+                                    <div class="green item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i.pos}}</span>
+                                    </div>
+                                    <div>
+                                        <table>
+                                            <tr v-for="(j, jIndex) in i.entry" :key="j.word + jIndex">
+                                                <td class="blue translation-item-word">
+                                                    <span class="to-translate" @click="toTranslate(j.word, state.result?.item?.tl, state.result?.sourceLanguage)">{{j.word}}</span>
+                                                </td>
+                                                <td><span v-for="(k, kIndex) in j.reserve" :key="k" >
+                                                    <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
+                                                    <span v-if="kIndex !== j.reserve.length - 1">, </span>
+                                                </span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else-if="state.result?.alternative?.length > 0">
+                                <div v-if="state.result.alternative.length === 1">
+                                    <div v-for="i in state.result.alternative[0]" :key="i" class="item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i}}</span>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <div v-for="(i, index) in state.result.alternative" :key="index" class="translation-item">
+                                        <div class="green">{{`Part: ${index + 1}`}}</div>
+                                        <div>
+                                            <div v-for="j in i" :key="j" class="item-pos">
+                                                <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                                <span>{{j}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="definition" class="definition">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div v-if="state.result?.definition?.length > 0">
+                                <div v-for="(i, index) in state.result.definition" :key="i.pos + index">
+                                    <div class="green item-pos">
+                                        <span class="codicon codicon-debug-breakpoint-log pos-icon"></span>
+                                        <span>{{i.pos}}</span>
+                                    </div>
+                                    <div v-for="(j, jIndex) in i.entry" :key="j.gloss + jIndex" class="definition-item">
+                                        <vscode-badge class="index">{{jIndex + 1}}</vscode-badge>
+                                        <div>
+                                            <table>
+                                                <tr class="item-row">
+                                                    <td class="blue">Definition:</td>
+                                                    <td>{{j.gloss}}</td>
+                                                </tr>
+                                                <tr class="item-row">
+                                                    <td class="blue">Example:</td>
+                                                    <td>{{j.example}}</td>
+                                                </tr>
+                                                <tr class="item-row">
+                                                    <td class="blue">Synonym:</td>
+                                                    <td>
+                                                        <span v-for="(k, kIndex) in j.synonym" :key="k" >
+                                                            <span class="to-translate" @click="toTranslate(k, state.result?.sourceLanguage, state.result?.item?.tl)">{{k}}</span>
+                                                            <span v-if="kIndex !== j.synonym.length - 1">, </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
+                        </div>
+                    </vscode-panel-view>
+
+                    <vscode-panel-view aria-labelledby="example" class="example">
+                        <vscode-progress-ring v-if="loading" class="loading"></vscode-progress-ring>
+                        <div v-else class="result-panel" :style="{maxHeight: panelViewMaxHeight()}">
+                            <div v-if="state.result?.example?.length > 0">
+                                <div v-for="(i, index) in state.result.example" :key="i + index" class="example-item">
+                                    <vscode-badge class="index">{{index + 1}}</vscode-badge>
+                                    <div v-html="renderExample(i)"></div>
+                                </div>
+                            </div>
+                            <div v-else class="no-data">No data</div>
+                        </div>
+                    </vscode-panel-view>
+                </vscode-panels>
+            </div>
+        </div>
+
+        <script type="module" src="${extensionPath}/node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js?v=${version}"></script>
+        <script src="${extensionPath}/node_modules/vue/dist/vue.global.prod.js?v=${version}"></script>
+        <script src="${extensionPath}/static/js/language.js?v=${version}"></script>
+        <script src="${extensionPath}/static/js/translation-panel.js?v=${version}"></script>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "rootDir": "src",
+        "outDir": "out",
+        "module": "Node16",
+        "target": "ESNext",
+        "sourceMap": true,
+    },
+}

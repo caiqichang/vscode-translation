@@ -1,3 +1,5 @@
+"use strict"
+
 const LANGUAGE = {
     "enum": [
         "auto", "zh-CN", "en", "zh-TW", "sq", "ar", "am", "az", "ga", "et",
@@ -13,7 +15,7 @@ const LANGUAGE = {
         "yi", "hi", "su", "id", "jw", "yo", "vi"
     ],
     "enumDescriptions": [
-        "Auto", "Chinese (Simple)", "English", "Chinese (Traditional)", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
+        "Auto", "Chinese-Simple", "English", "Chinese-Traditional", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
         "Basque", "Belarusian", "Bulgarian", "Icelandic", "Polish", "Bosnian", "Persian", "Afrikaans", "Danish", "German",
         "Russian", "French", "Filipino", "Finnish", "Frisian", "Khmer", "Georgian", "Gujarati", "Kazakh", "Haitian Creole",
         "Korean", "Hausa", "Dutch", "Kyrgyz", "Galician", "Catalan", "Czech", "Kannada", "Corsican", "Croatian",
@@ -24,29 +26,29 @@ const LANGUAGE = {
         "Tajik", "Telugu", "Tamil", "Thai", "Turkish", "Turkmen", "Welsh", "Urdu", "Ukrainian", "Uzbek",
         "Spanish", "Hebrew", "Greek", "Hawaiian", "Sindhi", "Hungarian", "Shona", "Armenian", "Igbo", "Italian",
         "Yiddish", "Hindi", "Sundanese", "Indonesian", "Javanese", "Yoruba", "Vietnamese"
-    ]
-};
+    ],
+}
 
-const SOURCE_LANGUAGE = [];
+const SOURCE_LANGUAGE = []
 LANGUAGE.enum.forEach((i, index) => {
     if (index === 0) return;
     SOURCE_LANGUAGE.push({
         key: i,
         label: LANGUAGE.enumDescriptions[index],
-    });
-});
-SOURCE_LANGUAGE.sort((l, r) => l.label.localeCompare(r.label));
+    })
+})
+SOURCE_LANGUAGE.sort((l, r) => l.label.localeCompare(r.label))
 SOURCE_LANGUAGE.unshift({
-    key: 'auto',
-    label: 'Auto',
-});
+    key: "auto",
+    label: "Auto",
+})
 
-const TARGET_LANGUAGE = [];
+const TARGET_LANGUAGE = []
 LANGUAGE.enum.forEach((i, index) => {
     if (index === 0) return;
     TARGET_LANGUAGE.push({
         key: i,
         label: LANGUAGE.enumDescriptions[index],
-    });
-});
-TARGET_LANGUAGE.sort((l, r) => l.label.localeCompare(r.label));
+    })
+})
+TARGET_LANGUAGE.sort((l, r) => l.label.localeCompare(r.label))

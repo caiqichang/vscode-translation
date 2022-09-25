@@ -1,14 +1,23 @@
 node_modules
 package-lock.json
+
+temp
+
+src
+out/**/*.map
+
 build
-sound
 
 .vscode
 script
+
 .gitignore
 .vscodeignore
-jsconfig.json
+
+tsconfig.json
 
 !node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js
 !node_modules/@vscode/codicons/dist/codicon.css
 !node_modules/@vscode/codicons/dist/codicon.ttf
+
+!node_modules/vue/dist/vue.global.prod.js
