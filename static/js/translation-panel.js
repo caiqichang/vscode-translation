@@ -47,12 +47,27 @@ const app = Vue.createApp({
         }
     },
     created() {
+        this.getState()
         vscode.postMessage({
             operation: this.Operation.Init,
             parameter: {},
         })
     },
+    watch: {
+        state: {
+            deep: true,
+            handler() {
+                this.setState()
+            }
+        }
+    },
     methods: {
+        getState() {
+            let state = vscode.getState()
+            if (state) {
+                this.state = copy(state)
+            }
+        },
         setState() {
             vscode.setState(copy(this.state))
         },

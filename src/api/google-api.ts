@@ -1,7 +1,6 @@
 import * as httpProxy from "../util/http-proxy"
 import * as api from "./index"
-
-const apiDomain = "https://translate.googleapis.com"
+import * as common from "../util/common"
 
 const translatePath = "/translate_a/single"
 const translateDefaultQuery = new Map<string, string | Array<string>>([
@@ -107,8 +106,12 @@ const transParam = (item: api.TranslateItem): Map<string, string> => {
     ])
 }
 
+const getApiUrl = () => {
+    return common.getUserConfig<string>(common.ConfigKey.apiUrl) ?? ""
+}
+
 const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
-    let url = `${apiDomain}${translatePath}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
+    let url = `${getApiUrl()}${translatePath}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
     return new Promise<api.TranslateResult>((resolve, reject) => {
         httpProxy.request(url, {
             method: "GET"
@@ -120,7 +123,7 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
 }
 
 const tts = (item: api.TranslateItem): Promise<Buffer> => {
-    let url = `${apiDomain}${ttsPath}?${createQuery(new Map([...ttsDefaultQuery, ...transParam(item)]))}`
+    let url = `${getApiUrl()}${ttsPath}?${createQuery(new Map([...ttsDefaultQuery, ...transParam(item)]))}`
     return new Promise<Buffer>((resolve, reject) => {
         httpProxy.request(url, {
             method: "GET"
@@ -185,7 +188,7 @@ const convertToTranslateResult = (item: api.TranslateItem, apiResult: ApiResult)
     result.example = apiResult.examples?.example?.filter(i => i.text).map(i => i.text as string) ?? []
 
     if (result?.sourceLanguage) result.item.sl = result.sourceLanguage
-    result.item.results = [result.defaultResult]
+    result.item.results = []
     if (result.alternative?.length === 1) result.alternative[0].forEach(i => result.item.results?.push(i))
 
     return result

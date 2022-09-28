@@ -35,6 +35,9 @@ This extension provides translation (based on [Google Translation](https://trans
 
   // Max size of history.
   "translation.history-max"： 50,
+
+  // URL for Google Translation API (alternative https://translate.google.com).
+  "translation.api-url": "https://translate.googleapis.com",
 }
 ```
 

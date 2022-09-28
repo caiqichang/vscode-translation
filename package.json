@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "engines": {
         "vscode": "^1.71.0"
     },
@@ -72,6 +72,11 @@
                     "description": "Max size of history.",
                     "type": "number",
                     "default": 50
+                },
+                "translation.api-url": {
+                    "description": "URL for Google Translation API (alternative https://translate.google.com).",
+                    "type": "string",
+                    "default": "https://translate.googleapis.com"
                 }
             }
         },

@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.1
+- Fix: first two translation results are repeated.
+- Enable custom Google Translation API URL.
+
 ## 3.0.0
 - New logo and name.
 - Enable history and bookmark synchronizing (uncompatibile update, orignal history and bookmark will be lost).

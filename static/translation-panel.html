@@ -18,7 +18,7 @@
                         <vscode-text-area class="text" rows="5" v-model="state.q"></vscode-text-area>
                     </div>
                     <div class="pronounce">
-                        <vscode-button appearance="icon" title="Listen" @click="getTTS('sl')" :disabled="!state.result">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('sl')" .disabled="!state.result">
                             <span class="codicon codicon-unmute"></span>
                         </vscode-button>
                         <span class="pronounce-text">{{ state.result?.sourcePronounce }}</span>
@@ -27,14 +27,14 @@
                 </div>
 
                 <div class="operation">
-                    <vscode-button appearance="icon" class="mark-button" ref="markButton" :disabled="!state.q">
+                    <vscode-button appearance="icon" class="mark-button" ref="markButton" .disabled="!state.q">
                         <span v-if="!inBookmark()" @click="saveBookmark" class="codicon codicon-star-empty"></span>
                         <span v-else @click="removeBookmark({q: state.q, sl: state.sl, tl: state.tl})" class="codicon codicon-star-full"></span>
                     </vscode-button>
-                    <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" :disabled="!state.q">
+                    <vscode-button appearance="icon" title="Translate" class="play-button" @click="getTranslate" .disabled="!state.q">
                         <span class="codicon codicon-play"></span>
                     </vscode-button>
-                    <vscode-button appearance="icon" title="Swap" class="swap-button" :disabled="state.sl === 'auto'" @click="doSwap">
+                    <vscode-button appearance="icon" title="Swap" class="swap-button" .disabled="state.sl === 'auto'" @click="doSwap">
                         <span class="codicon codicon-arrow-swap"></span>
                     </vscode-button>
                 </div>
@@ -49,7 +49,7 @@
                         <vscode-text-area class="text" rows="5" v-model="state.defaultResult"></vscode-text-area>
                     </div>
                     <div class="pronounce">
-                        <vscode-button appearance="icon" title="Listen" @click="getTTS('tl')" :disabled="!state.result">
+                        <vscode-button appearance="icon" title="Listen" @click="getTTS('tl')" .disabled="!state.result">
                             <span class="codicon codicon-unmute"></span>
                         </vscode-button>
                         <span class="pronounce-text">{{ state.result?.targetPronounce }}</span>

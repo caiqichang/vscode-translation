@@ -38,6 +38,7 @@ enum ConfigKey {
     enableProxy = "enable-proxy",
     proxyUrl = "proxy-url",
     historyMax = "history-max",
+    apiUrl = "api-url",
 }
 
 const readPackageJson = (): any => {
