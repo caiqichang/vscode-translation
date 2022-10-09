@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.2
+- Enable customize host.
+
 ## 3.0.1
 - Fix: first two translation results are repeated.
 - Enable custom Google Translation API URL.

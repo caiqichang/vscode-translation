@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "engines": {
         "vscode": "^1.71.0"
     },
@@ -77,6 +77,11 @@
                     "description": "URL for Google Translation API (alternative https://translate.google.com).",
                     "type": "string",
                     "default": "https://translate.googleapis.com"
+                },
+                "translation.host": {
+                    "description": "Customizes host.",
+                    "type": "string",
+                    "default": ""
                 }
             }
         },

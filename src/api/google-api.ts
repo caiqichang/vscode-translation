@@ -106,16 +106,25 @@ const transParam = (item: api.TranslateItem): Map<string, string> => {
     ])
 }
 
-const getApiUrl = () => {
-    return common.getUserConfig<string>(common.ConfigKey.apiUrl) ?? ""
+const generateRequest = (path: string): Promise<Buffer> => {
+    let apiUrl = common.getUserConfig<string>(common.ConfigKey.apiUrl) ?? ""
+
+    let apiProtocol = apiUrl.startsWith("http://") ? "http://" : "https://"
+    let apiHost = apiUrl.replace("http://", "").replace("https://", "")
+
+    let host = common.getUserConfig<string>(common.ConfigKey.host) ?? ""
+    return httpProxy.request(`${apiProtocol}${host ? host : apiHost}${path}`, {
+        method: "GET",
+        headers: {
+            "Host": host ? apiHost: host,
+        },
+    })
 }
 
 const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
-    let url = `${getApiUrl()}${translatePath}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
+    let path = `${translatePath}?${createQuery(new Map([...translateDefaultQuery, ...transParam(item)]))}`
     return new Promise<api.TranslateResult>((resolve, reject) => {
-        httpProxy.request(url, {
-            method: "GET"
-        }).then(data => {
+        generateRequest(path).then(data => {
             let result = JSON.parse(data.toString()) as ApiResult
             resolve(convertToTranslateResult(item, result))
         }).catch(e => reject(e))
@@ -123,11 +132,9 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
 }
 
 const tts = (item: api.TranslateItem): Promise<Buffer> => {
-    let url = `${getApiUrl()}${ttsPath}?${createQuery(new Map([...ttsDefaultQuery, ...transParam(item)]))}`
+    let path = `${ttsPath}?${createQuery(new Map([...ttsDefaultQuery, ...transParam(item)]))}`
     return new Promise<Buffer>((resolve, reject) => {
-        httpProxy.request(url, {
-            method: "GET"
-        }).then(data => resolve(data)).catch(e => reject(e))
+        generateRequest(path).then(data => resolve(data)).catch(e => reject(e))
     })
 }
 

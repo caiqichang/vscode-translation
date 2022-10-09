@@ -4,6 +4,8 @@ This extension provides translation (based on [Google Translation](https://trans
 
 [Get from Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation)
 
+> 大陆地区可将host设置成："translation.host": "203.208.40.66"
+
 ## Features
 - Multiple languages translation support
 - Pronunciation support
@@ -38,6 +40,9 @@ This extension provides translation (based on [Google Translation](https://trans
 
   // URL for Google Translation API (alternative https://translate.google.com).
   "translation.api-url": "https://translate.googleapis.com",
+
+  // Customizes host.
+  "translation.host": "",
 }
 ```
 
