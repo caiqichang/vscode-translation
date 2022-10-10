@@ -35,10 +35,6 @@ enum ConfigKey {
     sourceLanguage = "source-language",
     targetLanguage = "target-language",
     simpleDisplayMode = "simple-display-mode",
-    enableProxy = "enable-proxy",
-    proxyUrl = "proxy-url",
-    historyMax = "history-max",
-    apiUrl = "api-url",
     host = "host",
 }
 

@@ -14,19 +14,15 @@ const action = (command: command.CommandName) => {
     api.translate(item).then(result => {
         history.writeHistory(result.item)
 
-        let msgArr = item.results?.map(i => `🔹${i}`) ?? []
+        let msg = (item.results?.map(i => `🔹${i}`) ?? []).join("")
         let msgType = common.getUserConfig<common.MessageMode>(common.ConfigKey.simpleDisplayMode)
         switch (msgType) {
             case common.MessageMode.notification: {
-                common.showNotification(msgArr.join(""))
+                common.showNotification(msg)
                 break;
             }
             case common.MessageMode.statusBar: {
-                common.showStatusBar(msgArr.join(""))
-                break;
-            }
-            case common.MessageMode.modal: {
-                common.showModal(msgArr.join("\n"))
+                common.showStatusBar(msg)
                 break;
             }
         }

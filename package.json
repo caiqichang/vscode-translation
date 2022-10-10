@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "engines": {
         "vscode": "^1.71.0"
     },
@@ -53,33 +53,12 @@
                     "type": "string",
                     "enum": [
                         "notification",
-                        "modal",
                         "statusBar"
                     ],
                     "default": "notification"
                 },
-                "translation.enable-proxy": {
-                    "description": "Controls whether to use http proxy for translation.",
-                    "type": "boolean",
-                    "default": false
-                },
-                "translation.proxy-url": {
-                    "description": "URL for http proxy.",
-                    "type": "string",
-                    "default": "http://127.0.0.1:1080"
-                },
-                "translation.history-max": {
-                    "description": "Max size of history.",
-                    "type": "number",
-                    "default": 50
-                },
-                "translation.api-url": {
-                    "description": "URL for Google Translation API (alternative https://translate.google.com).",
-                    "type": "string",
-                    "default": "https://translate.googleapis.com"
-                },
                 "translation.host": {
-                    "description": "Customizes host.",
+                    "description": "Specifies host.",
                     "type": "string",
                     "default": ""
                 }

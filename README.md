@@ -4,14 +4,11 @@ This extension provides translation (based on [Google Translation](https://trans
 
 [Get from Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation)
 
-> 大陆地区可将host设置成："translation.host": "203.208.40.66"
-
 ## Features
 - Multiple languages translation support
 - Pronunciation support
 - Bookmark support
 - User data synchronizing support
-- HTTP proxy support
 - [Settings](#settings)
 - [Simple Translation](#simple-translation)
 - [Complete Translation](#complete-translation)
@@ -29,19 +26,7 @@ This extension provides translation (based on [Google Translation](https://trans
   // Specifies how to display the result of simple translation.
   "translation.simple-display-mode": "notification",
 
-  // Controls whether to use http proxy for translation.
-  "translation.enable-proxy": false,
-
-  // URL for http proxy.
-  "translation.proxy-url": "http://127.0.0.1:1080",
-
-  // Max size of history.
-  "translation.history-max"： 50,
-
-  // URL for Google Translation API (alternative https://translate.google.com).
-  "translation.api-url": "https://translate.googleapis.com",
-
-  // Customizes host.
+  // Specifies host.
   "translation.host": "",
 }
 ```
@@ -170,7 +155,7 @@ This extension provides translation (based on [Google Translation](https://trans
 - Select text in editor and right click, choose `Simple Translate` (or use shortcut `Shift+Alt+T`),  
 and the translation for selected text will be shown in notification.
 
-- It is possiable to display the translation result in different ways (notification, modal, statusBar) by `translation.simple-display-mode`. 
+- It is possiable to display the translation result in different ways (notification or statusBar) by `translation.simple-display-mode`. 
 
 ![simple-translate-screenshot](resources/screenshot/simple-translate.gif)
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.3
+- Fix: no results when translating multiple sentences using simple translate.
+- Optimise: reduce settings.
+
 ## 3.0.2
 - Enable customize host.
 

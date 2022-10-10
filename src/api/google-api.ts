@@ -2,6 +2,8 @@ import * as httpProxy from "../util/http-proxy"
 import * as api from "./index"
 import * as common from "../util/common"
 
+const apiDomain = "translate.googleapis.com"
+
 const translatePath = "/translate_a/single"
 const translateDefaultQuery = new Map<string, string | Array<string>>([
     ["client", "gtx"],
@@ -107,16 +109,11 @@ const transParam = (item: api.TranslateItem): Map<string, string> => {
 }
 
 const generateRequest = (path: string): Promise<Buffer> => {
-    let apiUrl = common.getUserConfig<string>(common.ConfigKey.apiUrl) ?? ""
-
-    let apiProtocol = apiUrl.startsWith("http://") ? "http://" : "https://"
-    let apiHost = apiUrl.replace("http://", "").replace("https://", "")
-
     let host = common.getUserConfig<string>(common.ConfigKey.host) ?? ""
-    return httpProxy.request(`${apiProtocol}${host ? host : apiHost}${path}`, {
+    return httpProxy.request(`https://${host ? host : apiDomain}${path}`, {
         method: "GET",
         headers: {
-            "Host": host ? apiHost: host,
+            "Host": host ? apiDomain : host,
         },
     })
 }
@@ -196,7 +193,11 @@ const convertToTranslateResult = (item: api.TranslateItem, apiResult: ApiResult)
 
     if (result?.sourceLanguage) result.item.sl = result.sourceLanguage
     result.item.results = []
-    if (result.alternative?.length === 1) result.alternative[0].forEach(i => result.item.results?.push(i))
+    if (result.alternative?.length === 1) {
+        result.alternative[0].forEach(i => result.item.results?.push(i))
+    } else {
+        result.item.results?.push(result.defaultResult)
+    }
 
     return result
 }
