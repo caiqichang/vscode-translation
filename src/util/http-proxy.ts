@@ -20,7 +20,12 @@ const request = (url: string, options: http.RequestOptions | https.RequestOption
     let apiUrl = new URL(url)
     let apiClient = apiUrl.protocol.toLowerCase() === "http:" ? http : https
     return new Promise<Buffer>((resolve, reject) => {
-        let request = apiClient.request(apiUrl.href, options, response => {
+        let request = apiClient.request(apiUrl.href, {
+            ...{
+                rejectUnauthorized: false,
+            },
+            ...options,
+        }, response => {
             responseHandler(response, resolve, reject)
         })
         if (body) request.write(body)

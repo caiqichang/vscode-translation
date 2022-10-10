@@ -6,8 +6,9 @@ const getEditorSelection = (): string => {
     return vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection) ?? ""
 }
 
-const showError = (content: string) => {
-    vscode.window.showErrorMessage(content)
+const showError = (content: unknown) => {
+    console.log(content)
+    vscode.window.showErrorMessage(content as string)
 }
 
 const showNotification = (content: string) => {
