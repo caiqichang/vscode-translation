@@ -22,7 +22,7 @@ class TranslationPanel {
         this.panel.webview.html = fileUtil.readExtensionFile("static/translation-panel.html").toString()
             .replaceAll("${extensionPath}", common.createWebviewUri(this.panel, "").toString())
             .replaceAll("${version}", Math.random().toString())
-        this.panel.iconPath = common.createUri("/resources/logo.jpg")
+        this.panel.iconPath = common.createUri("/resources/logo.png")
         TranslationIpc.instance().setWebview(this.panel)
     }
 

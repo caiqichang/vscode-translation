@@ -2,7 +2,7 @@ import * as httpProxy from "../util/http-proxy"
 import * as api from "./index"
 import * as common from "../util/common"
 
-const apiDomain = "translate.googleapis.com"
+const apiDomain = "https://translate.googleapis.com"
 
 const translatePath = "/translate_a/single"
 const translateDefaultQuery = new Map<string, string | Array<string>>([
@@ -109,12 +109,8 @@ const transParam = (item: api.TranslateItem): Map<string, string> => {
 }
 
 const generateRequest = (path: string): Promise<Buffer> => {
-    let host = common.getUserConfig<string>(common.ConfigKey.host) ?? ""
-    return httpProxy.request(`https://${host ? host : apiDomain}${path}`, {
+    return httpProxy.request(`${apiDomain}${path}`, {
         method: "GET",
-        headers: {
-            "Host": host ? apiDomain : host,
-        },
     })
 }
 

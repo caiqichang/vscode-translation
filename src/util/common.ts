@@ -36,7 +36,6 @@ enum ConfigKey {
     sourceLanguage = "source-language",
     targetLanguage = "target-language",
     simpleDisplayMode = "simple-display-mode",
-    host = "host",
 }
 
 const readPackageJson = (): any => {

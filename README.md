@@ -1,4 +1,4 @@
-# <img src="resources/logo.jpg" width="30"> Translator
+# <img src="resources/logo.png" width="30"> Translator
 
 This extension provides translation (based on [Google Translation](https://translate.google.com)) support for Visual Studio Code.
 
@@ -25,9 +25,6 @@ This extension provides translation (based on [Google Translation](https://trans
 
   // Specifies how to display the result of simple translation.
   "translation.simple-display-mode": "notification",
-
-  // Specifies host.
-  "translation.host": "",
 }
 ```
 

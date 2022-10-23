@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "engines": {
         "vscode": "^1.71.0"
     },
@@ -14,7 +14,7 @@
         "translate",
         "translation"
     ],
-    "icon": "resources/logo.jpg",
+    "icon": "resources/logo.png",
     "extensionKind": [
         "ui",
         "workspace"
@@ -56,11 +56,6 @@
                         "statusBar"
                     ],
                     "default": "notification"
-                },
-                "translation.host": {
-                    "description": "Specifies host.",
-                    "type": "string",
-                    "default": ""
                 }
             }
         },
@@ -106,7 +101,7 @@
             {
                 "command": "simpleTranslate",
                 "when": "editorHasSelection",
-                "key": "shift+alt+t"
+                "key": "shift+alt+y"
             }
         ]
     },

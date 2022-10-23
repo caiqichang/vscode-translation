@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.0.5
+- Remove Host setting.
+- Update logo.
+- Change keymap of simple translate to `Shift + Alt + Y`.
+
 ## 3.0.3
 - Fix: no results when translating multiple sentences using simple translate.
 - Optimise: reduce settings.
