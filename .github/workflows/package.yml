@@ -9,10 +9,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
         
-      - name: Run npm Scripts
-        run: |
-          npm install
-          npm run package
+      - name: Install Dependencies
+        run: npm install
+    
+      - name: Run Package Scripts
+        run: npm run package
       
       - name: Export artifacts
         uses: actions/upload-artifact@v3.1.1
