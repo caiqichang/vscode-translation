@@ -1,0 +1,23 @@
+name: package
+
+on: workflow_dispatch
+
+jobs:
+  package:
+    runs-on: ubuntu-lastest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@lastest
+        
+      - name: Run npm Scripts
+        run: 
+          npm install
+          npm run package
+      
+      - name: Export artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: build/*
+    
+    
