@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node
-        uses: actions/setup-node@latest
+        uses: actions/setup-node@v3.5.1
         
       - name: Run npm Scripts
         run: 
@@ -15,7 +15,7 @@ jobs:
           npm run package
       
       - name: Export artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: output
           path: build/*
