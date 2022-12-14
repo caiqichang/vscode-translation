@@ -2,7 +2,10 @@
 
 This extension provides translation (based on [Google Translation](https://translate.google.com)) support for Visual Studio Code.
 
-[Get from Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation)
+Get from 
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation) 
+or 
+[OpenVSX](https://open-vsx.org/extension/caiqichang/vscode-translation)
 
 ## Features
 - Multiple languages translation support
