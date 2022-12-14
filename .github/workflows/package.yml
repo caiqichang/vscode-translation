@@ -4,10 +4,10 @@ on: workflow_dispatch
 
 jobs:
   package:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Node
-        uses: actions/setup-node@lastest
+        uses: actions/setup-node@latest
         
       - name: Run npm Scripts
         run: 
@@ -15,7 +15,7 @@ jobs:
           npm run package
       
       - name: Export artifacts
-        uses: actions/upload-artifact@lastest
+        uses: actions/upload-artifact@latest
         with:
           name: output
           path: build/*
