@@ -14,6 +14,8 @@ script
 .gitignore
 .vscodeignore
 
+.github
+
 tsconfig.json
 
 !node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js
