@@ -15,7 +15,7 @@ jobs:
           npm run package
       
       - name: Export artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@lastest
         with:
           name: output
           path: build/*
