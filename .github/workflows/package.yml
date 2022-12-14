@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
+        with:
+          persist-credentials: false
         
       - name: Install Dependencies
         run: npm install
