@@ -1,4 +1,4 @@
-name: compile-and-package
+name: compile and package
 
 on: workflow_dispatch
 
@@ -20,7 +20,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: vscode-translation-output
+          name: vscode-translation
           path: build/*
     
     
