@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "engines": {
         "vscode": "^1.71.0"
     },
@@ -102,6 +102,11 @@
                 "command": "simpleTranslate",
                 "when": "editorHasSelection",
                 "key": "shift+alt+y"
+            },
+            {
+                "command": "completeTranslate",
+                "when": "editorHasSelection",
+                "key": "shift+enter"
             }
         ]
     },

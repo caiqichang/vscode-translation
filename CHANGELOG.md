@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.6
+- Add keymap `Shift + Enter` for complete translation.
+
 ## 3.0.5
 - Remove Host setting.
 - Update logo.
