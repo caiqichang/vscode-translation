@@ -237,10 +237,6 @@ const app = Vue.createApp({
                     this.state.bookmark = data.parameter
                     break;
                 }
-                case this.Operation.PlaySourceAudio: {
-                    this.getTTS("sl")
-                    break;
-                }
             }
         },
     },

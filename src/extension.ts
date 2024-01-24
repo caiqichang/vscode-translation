@@ -1,7 +1,6 @@
 import vscode from "vscode"
 import * as simpleTranslate from "./command/simple-translate"
 import * as completeTranslate from "./command/complete-translate"
-import * as playSourceAudio from "./command/play-source-audio"
 import { App } from "./util/app"
 import * as command from "./command/index"
 
@@ -20,10 +19,6 @@ const activate = (context: vscode.ExtensionContext) => {
         {
             command: command.CommandName.completeTranslate,
             handler: completeTranslate.action
-        },
-        {
-            command: command.CommandName.playSourceAudio,
-            handler: playSourceAudio.action
         },
     ].forEach(i => {
         vscode.commands.registerCommand(i.command, () => i.handler(i.command))

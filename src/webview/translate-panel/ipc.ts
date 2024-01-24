@@ -134,12 +134,6 @@ class TranslationIpc {
             },
         })
     }
-
-    public playSourceAudio() {
-        this.panel?.webview?.postMessage({
-            operation: Operation.PlaySourceAudio,
-        })
-    }
 }
 
 enum Operation {
@@ -154,7 +148,6 @@ enum Operation {
     RemoveBookmark = "RemoveBookmark",
     ExportHistory = "ExportHistory",
     ExportBookmark = "ExportBookmark",
-    PlaySourceAudio = "PlaySourceAudio",
 }
 
 interface Message {
