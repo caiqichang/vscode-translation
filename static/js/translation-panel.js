@@ -24,6 +24,7 @@ const app = Vue.createApp({
                 RemoveBookmark: "RemoveBookmark",
                 ExportHistory: "ExportHistory",
                 ExportBookmark: "ExportBookmark",
+                PlaySourceAudio: "PlaySourceAudio",
             },
             tabs: [
                 { id: "history", name: "History" },
@@ -234,6 +235,10 @@ const app = Vue.createApp({
                 case this.Operation.RemoveBookmark:
                 case this.Operation.SaveBookmark: {
                     this.state.bookmark = data.parameter
+                    break;
+                }
+                case this.Operation.PlaySourceAudio: {
+                    this.getTTS("sl")
                     break;
                 }
             }
