@@ -36,6 +36,7 @@ enum ConfigKey {
     sourceLanguage = "source-language",
     targetLanguage = "target-language",
     simpleDisplayMode = "simple-display-mode",
+    maxHistory = "max-history",
 }
 
 const readPackageJson = (): any => {

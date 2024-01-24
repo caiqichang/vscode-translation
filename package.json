@@ -3,9 +3,9 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.6",
+    "version": "3.0.7",
     "engines": {
-        "vscode": "^1.71.0"
+        "vscode": "^1.85.0"
     },
     "categories": [
         "Other"
@@ -30,9 +30,7 @@
     },
     "main": "out/extension.js",
     "activationEvents": [
-        "onCommand:simpleTranslate",
-        "onCommand:completeTranslate",
-        "onCommand:translation"
+        "onStartupFinished"
     ],
     "contributes": {
         "configuration": {
@@ -56,6 +54,11 @@
                         "statusBar"
                     ],
                     "default": "notification"
+                },
+                "translation.max-history": {
+                    "description": "Max size of history.",
+                    "type": "number",
+                    "default": 20
                 }
             }
         },
@@ -71,6 +74,10 @@
             {
                 "command": "translation",
                 "title": "Translation"
+            },
+            {
+                "command": "playSourceAudio",
+                "title": "Play Source Audio"
             }
         ],
         "menus": {
@@ -106,7 +113,12 @@
             {
                 "command": "completeTranslate",
                 "when": "editorHasSelection",
-                "key": "shift+enter"
+                "key": "shift+alt+t"
+            },
+            {
+                "command": "playSourceAudio",
+                "when": "editorHasSelection",
+                "key": "shift+alt+p"
             }
         ]
     },
@@ -117,13 +129,13 @@
         "watch": "tsc --watch --project ./"
     },
     "devDependencies": {
-        "@types/node": "^18.7.18",
-        "@types/vscode": "^1.71.0",
-        "typescript": "^4.8.3"
+        "@types/node": "^20.11.5",
+        "@types/vscode": "^1.85.0",
+        "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@vscode/codicons": "^0.0.32",
-        "@vscode/webview-ui-toolkit": "^1.1.0",
-        "vue": "^3.2.39"
+        "@vscode/codicons": "^0.0.35",
+        "@vscode/webview-ui-toolkit": "^1.4.0",
+        "vue": "^3.4.15"
     }
 }

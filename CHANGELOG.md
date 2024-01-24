@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.7
+- Add keymap `Shift + Alt + P` for playing source audio.
+- Change keymap of complete translate to `Shift + Alt + T`.
+- Add setting of max size of history.
+- Update dependencies.
+
 ## 3.0.6
 - Add keymap `Shift + Enter` for complete translation.
 

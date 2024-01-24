@@ -28,6 +28,9 @@ or
 
   // Specifies how to display the result of simple translation.
   "translation.simple-display-mode": "notification",
+
+  // Max size of history.
+  "translation.max-history": 20,
 }
 ```
 
