@@ -24,7 +24,6 @@ const app = Vue.createApp({
                 RemoveBookmark: "RemoveBookmark",
                 ExportHistory: "ExportHistory",
                 ExportBookmark: "ExportBookmark",
-                PlaySourceAudio: "PlaySourceAudio",
             },
             tabs: [
                 { id: "history", name: "History" },

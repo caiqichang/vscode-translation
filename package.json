@@ -110,17 +110,12 @@
                 "command": "completeTranslate",
                 "when": "editorHasSelection",
                 "key": "shift+alt+t"
-            },
-            {
-                "command": "playSourceAudio",
-                "when": "editorHasSelection",
-                "key": "shift+alt+p"
             }
         ]
     },
     "scripts": {
         "prepackage": "node script/pre-package.js && npm run compile",
-        "package": "npx --package vsce vsce package -o build/",
+        "package": "npx --package @vscode/vsce vsce package -o build/",
         "compile": "tsc --project ./",
         "watch": "tsc --watch --project ./"
     },
