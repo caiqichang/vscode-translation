@@ -185,7 +185,11 @@ const convertToTranslateResult = (item: api.TranslateItem, apiResult: ApiResult)
         })
     })
 
-    result.example = apiResult.examples?.example?.filter(i => i.text).map(i => i.text as string) ?? []
+    result.example = apiResult.examples?.example?.filter(i => i.text).map(i => {
+        return {
+            source: i.text as string
+        }
+    }) ?? []
 
     if (result?.sourceLanguage) result.item.sl = result.sourceLanguage
     result.item.results = []

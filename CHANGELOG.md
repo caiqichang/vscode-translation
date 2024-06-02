@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.8
+- Add Microsoft translation and voice API.
+
 ## 3.0.7
 - Change keymap of complete translate to `Shift + Alt + T`.
 - Add setting of max size of history.

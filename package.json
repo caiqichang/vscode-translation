@@ -59,6 +59,24 @@
                     "description": "Max size of history.",
                     "type": "number",
                     "default": 20
+                },
+                "translation.translation-api-provider": {
+                    "description": "Specifies the translation api provider. (Google or Microsoft)",
+                    "type": "string",
+                    "enum": [
+                        "Google",
+                        "Microsoft"
+                    ],
+                    "default": "Google"
+                },
+                "translation.voice-api-provider": {
+                    "description": "Specifies the voice api provider. (Google or Microsoft)",
+                    "type": "string",
+                    "enum": [
+                        "Google",
+                        "Microsoft"
+                    ],
+                    "default": "Google"
                 }
             }
         },
@@ -122,11 +140,13 @@
     "devDependencies": {
         "@types/node": "^20.11.5",
         "@types/vscode": "^1.85.0",
+        "@types/ws": "^8.5.10",
         "typescript": "^5.3.3"
     },
     "dependencies": {
         "@vscode/codicons": "^0.0.35",
         "@vscode/webview-ui-toolkit": "^1.4.0",
-        "vue": "^3.4.15"
+        "vue": "^3.4.15",
+        "ws": "^8.17.0"
     }
 }

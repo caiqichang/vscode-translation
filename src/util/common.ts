@@ -37,6 +37,8 @@ enum ConfigKey {
     targetLanguage = "target-language",
     simpleDisplayMode = "simple-display-mode",
     maxHistory = "max-history",
+    translationApiProvider = "translation-api-provider",
+    voiceApiProvider = "voice-api-provider",
 }
 
 const readPackageJson = (): any => {
@@ -85,6 +87,14 @@ const exportToFile = (content: string, fileName: string) => {
     })
 }
 
+const escapeHtml = (content: string) => {
+    return content.replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll('\'', '&#39;')
+}
+
 export {
     MessageMode,
     getEditorSelection,
@@ -99,4 +109,5 @@ export {
     createWebviewUri,
     createUri,
     exportToFile,
+    escapeHtml,
 }

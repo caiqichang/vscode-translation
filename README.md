@@ -1,6 +1,6 @@
 # <img src="resources/logo.png" width="30"> Translator
 
-This extension provides translation (based on [Google Translation](https://translate.google.com)) support for Visual Studio Code.
+This extension provides translation (based on Google and Microsoft Translation) support for Visual Studio Code.
 
 Get from 
 [Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation) 
@@ -9,6 +9,7 @@ or
 
 ## Features
 - Multiple languages translation support
+- Google and Microsoft translation API support
 - Pronunciation support
 - Bookmark support
 - User data synchronizing support
@@ -31,6 +32,12 @@ or
 
   // Max size of history.
   "translation.max-history": 20,
+
+  // Specifies the translation api provider. (Google or Microsoft)
+  "translation.translation-api-provider": "Google",
+
+  // Specifies the voice api provider. (Google or Microsoft)
+  "translation.voice-api-provider": "Google"
 }
 ```
 

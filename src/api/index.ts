@@ -1,4 +1,6 @@
 import * as googleApi from "./google-api"
+import * as microsoftApi from "./microsoft-api"
+import * as common from "../util/common"
 
 interface TranslateItem {
     q: string
@@ -16,7 +18,12 @@ interface TranslateResult {
     targetPronounce?: string
     dictionary: Dictionary[]
     definition: Definition[]
-    example: string[]
+    example: Example[]
+}
+
+interface Example {
+    source: string,
+    trans?: string,
 }
 
 interface Dictionary {
@@ -40,14 +47,16 @@ interface DefinitionEntry {
     synonym: string[]
 }
 
-const translator = googleApi
-
 const translate = (item: TranslateItem): Promise<TranslateResult> => {
-    return translator.translate(item)
+    return (
+        common.getUserConfig<string>(common.ConfigKey.translationApiProvider) === "Microsoft" ? microsoftApi : googleApi
+    ).translate(item)
 }
 
 const tts = (item: TranslateItem): Promise<Buffer> => {
-    return translator.tts(item)
+    return (
+        common.getUserConfig<string>(common.ConfigKey.voiceApiProvider) === "Microsoft" ? microsoftApi : googleApi
+    ).tts(item)
 }
 
 export {
