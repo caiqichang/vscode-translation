@@ -1,6 +1,5 @@
 import * as httpProxy from "../util/http-proxy"
 import * as api from "./index"
-import * as common from "../util/common"
 
 const apiDomain = "https://translate.googleapis.com"
 

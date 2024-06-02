@@ -1,10 +1,8 @@
-import * as httpProxy from "../util/http-proxy"
 import * as api from "./index"
 import * as common from "../util/common"
 import * as ws from "ws"
 import * as crypto from "crypto"
 import * as microsoftApiDict from "./microsoft-api-dict"
-import { buffer } from "stream/consumers"
 
 
 const ttsToken = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
@@ -175,7 +173,6 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
                 }
             })
 
-            // example
             let example = await getExample(item, dictionary[0].translations.map(i => {
                 return {
                     Text: dictionary[0].normalizedSource,
