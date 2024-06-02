@@ -16,6 +16,8 @@ script
 
 .github
 
+doc
+
 tsconfig.json
 
 !node_modules/@vscode/webview-ui-toolkit/dist/toolkit.min.js

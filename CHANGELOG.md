@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.9
+- Optimise part-of-speech tag name of Microsoft API result.
+
 ## 3.0.8
 - Add Microsoft translation and voice API.
 

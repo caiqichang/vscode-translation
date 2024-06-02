@@ -156,7 +156,8 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
 
         if (dictionary.length && dictionary.length > 0) {
             dictionary[0].translations.forEach(d => {
-                let posArr = result.dictionary.filter(i => i.pos === d.posTag)
+                let posName = microsoftApiDict.posTagMap.get(d.posTag)
+                let posArr = result.dictionary.filter(i => i.pos === posName)
                 if (posArr.length > 0) {
                     posArr[0].entry?.push({
                         word: d.displayTarget,
@@ -164,7 +165,7 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
                     })
                 } else {
                     result.dictionary.push({
-                        pos: d.posTag,
+                        pos: posName,
                         entry: [{
                             word: d.displayTarget,
                             reserve: d.backTranslations.map(i => i.displayText)

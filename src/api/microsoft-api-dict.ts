@@ -151,6 +151,19 @@ const voiceMap = new Map<string, string>([
     ["vi", "vi-VN-HoaiMyNeural"],
 ])
 
+const posTagMap = new Map<string, string>([
+    ["ADJ", "Adjectives"],
+    ["ADV", "Adverbs"],
+    ["CONJ", "Conjunctions"],
+    ["DET", "Determiners"],
+    ["MODAL", "Verbs"],
+    ["NOUN", "Nouns"],
+    ["PREP", "Prepositions"],
+    ["PRON", "Pronouns"],
+    ["VERB", "Verbs"],
+    ["OTHER", "Other"],
+])
+
 const parseTranslation = (value: string) => {
     let key = value
     translationMap.forEach((k, v) => {
@@ -170,6 +183,7 @@ const parseVoice = (value: string) => {
 export {
     translationMap,
     voiceMap,
+    posTagMap,
     parseTranslation,
     parseVoice,
 }
