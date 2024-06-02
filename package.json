@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.9",
+    "version": "3.0.10",
     "engines": {
         "vscode": "^1.85.0"
     },

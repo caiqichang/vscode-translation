@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.10
+- Fix Japanese language lost.
+
 ## 3.0.9
 - Optimise part-of-speech tag name of Microsoft API result.
 

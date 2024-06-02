@@ -2,7 +2,7 @@
 
 const LANGUAGE = {
     "enum": [
-        "auto", "zh-CN", "en", "zh-TW", "sq", "ar", "am", "az", "ga", "et",
+        "auto", "zh-CN", "en", "zh-TW", "ja", "sq", "ar", "am", "az", "ga", "et",
         "bg", "is", "pl", "bs", "fa", "af", "da", "de",
         "ru", "fr", "tl", "fi", "km", "ka", "gu", "kk",
         "ko", "nl", "gl", "ca", "cs", "kn", "hr",
@@ -15,7 +15,7 @@ const LANGUAGE = {
         "hi", "id", "vi"
     ],
     "enumDescriptions": [
-        "Auto", "Chinese-Simple", "English", "Chinese-Traditional", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
+        "Auto", "Chinese-Simple", "English", "Chinese-Traditional", "Japanese", "Albanian", "Arabic", "Amharic", "Azerbaijani", "Irish", "Estonian",
         "Bulgarian", "Icelandic", "Polish", "Bosnian", "Persian", "Afrikaans", "Danish", "German",
         "Russian", "French", "Filipino", "Finnish", "Khmer", "Georgian", "Gujarati", "Kazakh",
         "Korean", "Dutch", "Galician", "Catalan", "Czech", "Kannada", "Croatian",
