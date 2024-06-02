@@ -181,14 +181,16 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
                 }
             }))
 
-            example.forEach(e => {
-                e.examples.forEach(i => {
-                    result.example.push({
-                        source: `${i.sourcePrefix}<b>${i.sourceTerm}</b>${i.sourceSuffix}`,
-                        trans: `${i.targetPrefix}<b>${i.targetTerm}</b>${i.targetSuffix}`,
+            if (example.length) {
+                example.forEach(e => {
+                    e.examples.forEach(i => {
+                        result.example.push({
+                            source: `${i.sourcePrefix}<b>${i.sourceTerm}</b>${i.sourceSuffix}`,
+                            trans: `${i.targetPrefix}<b>${i.targetTerm}</b>${i.targetSuffix}`,
+                        })
                     })
                 })
-            })
+            }
         }
 
         resolve(result)
