@@ -143,16 +143,18 @@ const translate = (item: api.TranslateItem): Promise<api.TranslateResult> => {
         await getAuth()
 
         let translation = await getTranslation(item)
-        let dictionary = await getDictionary(item)
 
         if (translation[0].detectedLanguage) {
             result.item.sl = microsoftApiDict.parseTranslation(translation[0].detectedLanguage.language)
+            item.sl = result.item.sl
         }
         result.item.results = translation[0].translations.map(i => i.text)
 
         result.defaultResult = translation[0].translations[0].text
         result.sourceLanguage = result.item.sl
         result.alternative.push(result.item.results)
+
+        let dictionary = await getDictionary(item)
 
         if (dictionary.length && dictionary.length > 0) {
             dictionary[0].translations.forEach(d => {

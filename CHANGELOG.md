@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.11
+- Bug fix.
+
 ## 3.0.10
 - Fix Japanese language lost.
 
