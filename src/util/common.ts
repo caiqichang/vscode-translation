@@ -7,7 +7,7 @@ const getEditorSelection = (): string => {
 }
 
 const showError = (content: unknown) => {
-    console.log(content)
+    console.error(content)
     vscode.window.showErrorMessage(content as string)
 }
 
@@ -39,6 +39,7 @@ enum ConfigKey {
     maxHistory = "max-history",
     translationApiProvider = "translation-api-provider",
     voiceApiProvider = "voice-api-provider",
+    translateHoverWord = "translate-hover-word"
 }
 
 const readPackageJson = (): any => {

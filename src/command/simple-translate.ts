@@ -3,7 +3,7 @@ import * as common from "../util/common"
 import * as history from "../component/history"
 import * as command from "./index"
 
-const action = (command: command.CommandName) => {
+const action = (command: command.CommandName, args: any[]) => {
     let item: api.TranslateItem = {
         q: common.getEditorSelection(),
         sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",

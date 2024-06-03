@@ -14,8 +14,8 @@ const writeHistoryHelper = (content: Array<api.TranslateItem>) => {
 
 const writeHistory = (item: api.TranslateItem): Array<api.TranslateItem> => {
     let history = readHistory()
-    if (history.length >= (common.getUserConfig<number>(common.ConfigKey.maxHistory) ?? 20)) history.pop()
     history = history.filter(i => !(i.q === item.q && i.sl === item.sl && i.tl === item.tl))
+    if (history.length >= (common.getUserConfig<number>(common.ConfigKey.maxHistory) ?? 20)) history.pop()
     history.unshift(item)
     writeHistoryHelper(history)
     return history

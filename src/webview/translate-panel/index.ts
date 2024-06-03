@@ -26,16 +26,23 @@ class TranslationPanel {
         TranslationIpc.instance().setWebview(this.panel)
     }
 
-    public showPanel = (cmd: command.CommandName) => {
+    public showPanel = (cmd: command.CommandName, args: any[]) => {
+        let q = common.getEditorSelection()
+
         let fromComplete = cmd === command.CommandName.completeTranslate
+        if (typeof args === "string") {
+            fromComplete = true
+            q = Buffer.from(args as string, "base64").toString()
+        }
+
         if (this.panel === null) {
-            if (fromComplete) TranslationIpc.instance().setQuery(common.getEditorSelection())
+            if (fromComplete) TranslationIpc.instance().setQuery(q)
             this.initPanel()
         } else if (!this.panel.visible) {
             this.panel.reveal()
-            TranslationIpc.instance().sendTranslate(common.getEditorSelection())
+            TranslationIpc.instance().sendTranslate(q)
         } else {
-            TranslationIpc.instance().sendTranslate(common.getEditorSelection())
+            TranslationIpc.instance().sendTranslate(q)
         }
     }
 }

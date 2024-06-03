@@ -3,6 +3,7 @@ import * as simpleTranslate from "./command/simple-translate"
 import * as completeTranslate from "./command/complete-translate"
 import { App } from "./util/app"
 import * as command from "./command/index"
+import * as allLanguageHoverProvider from "./provider/all-language-hover-provider"
 
 const activate = (context: vscode.ExtensionContext) => {
     App.instance().setContext(context);
@@ -21,8 +22,10 @@ const activate = (context: vscode.ExtensionContext) => {
             handler: completeTranslate.action
         },
     ].forEach(i => {
-        vscode.commands.registerCommand(i.command, () => i.handler(i.command))
+        vscode.commands.registerCommand(i.command, (args) => i.handler(i.command, args))
     })
+
+    vscode.languages.registerHoverProvider(allLanguageHoverProvider.language, allLanguageHoverProvider.provider)
 }
 
 export {

@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.12
+- Add hover word translation.
+
 ## 3.0.11
 - Bug fix.
 

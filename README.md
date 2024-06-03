@@ -33,6 +33,9 @@ or
   // Max size of history.
   "translation.max-history": 20,
 
+  // Enable/Disable translating the hover word.
+  "translation.translate-hover-word": false,
+
   // Specifies the translation api provider. (Google or Microsoft)
   "translation.translation-api-provider": "Google",
 
