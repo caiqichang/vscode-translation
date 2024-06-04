@@ -3,7 +3,7 @@
     "displayName": "Translator",
     "description": "A translation tool for Visual Studio Code.",
     "publisher": "caiqichang",
-    "version": "3.0.12",
+    "version": "3.0.13",
     "engines": {
         "vscode": "^1.85.0"
     },
@@ -78,10 +78,10 @@
                     ],
                     "default": "Google"
                 },
-                "translation.translate-hover-word": {
-                    "description": "Enable/Disable translating the hover word.",
+                "translation.auto-translate-hovering": {
+                    "description": "Enable/Disable translating the selected text when mouse hovering automatically.",
                     "type": "boolean",
-                    "default": false
+                    "default": true
                 }
             }
         },

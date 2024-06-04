@@ -4,8 +4,13 @@ import * as history from "../component/history"
 import * as command from "./index"
 
 const action = (command: command.CommandName, args: any[]) => {
+    let q = common.getEditorSelection()
+    if (typeof args === "string") {
+        q = Buffer.from(args as string, "base64").toString()
+    }
+
     let item: api.TranslateItem = {
-        q: common.getEditorSelection(),
+        q,
         sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
         tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
         results: [],

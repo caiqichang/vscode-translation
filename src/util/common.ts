@@ -39,7 +39,7 @@ enum ConfigKey {
     maxHistory = "max-history",
     translationApiProvider = "translation-api-provider",
     voiceApiProvider = "voice-api-provider",
-    translateHoverWord = "translate-hover-word"
+    autoTranslateHovering = "auto-translate-hovering"
 }
 
 const readPackageJson = (): any => {

@@ -7,34 +7,42 @@ const language = "*"
 
 const provider: vscode.HoverProvider = {
     async provideHover(document, position, token) {
-        if (common.getUserConfig<boolean>(common.ConfigKey.translateHoverWord)) {
-            let text = document.getText(document.getWordRangeAtPosition(position))
+        let q = common.getEditorSelection()
+        if (!q) return null
 
-            if (text.indexOf("\n") < 0) {
-                let item: api.TranslateItem = {
-                    q: text,
-                    sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
-                    tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
-                    results: [],
-                }
+        let text = document.getText(document.getWordRangeAtPosition(position))
+        if (q.indexOf(text) < 0) return null
 
-                let translate = ""
-                await api.translate(item).then(result => {
-                    history.writeHistory(result.item)
+        let base64Query = Buffer.from(q).toString("base64")
+        let simpleTranslateUrl = vscode.Uri.parse(`command:simpleTranslate?["${base64Query}"]`)
+        let completeTranslateUrl = vscode.Uri.parse(`command:completeTranslate?["${base64Query}"]`)
 
-                    translate = (item.results?.map(i => `🔹${i}`) ?? []).join("")
-                })
-
-                let content = new vscode.MarkdownString(`[${text}](${vscode.Uri.parse(`command:translation?["${Buffer.from(text).toString("base64")}"]`)}): ${translate}`)
-                content.isTrusted = true
-
-                return new vscode.Hover(content)
+        if (common.getUserConfig<boolean>(common.ConfigKey.autoTranslateHovering)) {
+            let item: api.TranslateItem = {
+                q,
+                sl: common.getUserConfig<string>(common.ConfigKey.sourceLanguage) ?? "",
+                tl: common.getUserConfig<string>(common.ConfigKey.targetLanguage) ?? "",
+                results: [],
             }
+
+            let translate = ""
+            await api.translate(item).then(result => {
+                history.writeHistory(result.item)
+
+                translate = (item.results?.map(i => `<br>🔹${i}`) ?? []).join("")
+            })
+
+            let content = new vscode.MarkdownString(`[Complete Translation](${completeTranslateUrl})${translate}`)
+            content.isTrusted = true
+            content.supportHtml = true
+
+            return new vscode.Hover(content)
+        } else {
+            let content = new vscode.MarkdownString(`Translation: [Simple](${simpleTranslateUrl}) | [Complete](${completeTranslateUrl})`)
+            content.isTrusted = true
+
+            return new vscode.Hover(content)
         }
-
-        return null
-
-
     },
 }
 

@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.13
+- Add hovering translation.
+
 ## 3.0.12
 - Add hover word translation.
 

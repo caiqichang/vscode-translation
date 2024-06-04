@@ -14,6 +14,7 @@ or
 - Bookmark support
 - User data synchronizing support
 - [Settings](#settings)
+- [Hovering Translation](#hovering-translation)
 - [Simple Translation](#simple-translation)
 - [Complete Translation](#complete-translation)
 
@@ -21,6 +22,9 @@ or
 ### Settings
 ```javascript
 {
+  // Enable/Disable translating the selected text when mouse hovering automatically.
+  "translation.auto-translate-hovering": true,
+
   // Default source language for translation.
   "translation.source-language": "auto",
 
@@ -32,9 +36,6 @@ or
 
   // Max size of history.
   "translation.max-history": 20,
-
-  // Enable/Disable translating the hover word.
-  "translation.translate-hover-word": false,
 
   // Specifies the translation api provider. (Google or Microsoft)
   "translation.translation-api-provider": "Google",
@@ -164,13 +165,20 @@ or
 
 [Back to top](#features)
 
+### Hovering Translation
+- Select text in editor and hover on it, and the translation will shown in popup.
+
+![hovering-translation-screenshot](resources/screenshot/hover-translate.gif)
+
+[Back to top](#features)
+
 ### Simple Translation
 - Select text in editor and right click, choose `Simple Translate` (or use shortcut `Shift+Alt+T`),  
 and the translation for selected text will be shown in notification.
 
 - It is possiable to display the translation result in different ways (notification or statusBar) by `translation.simple-display-mode`. 
 
-![simple-translate-screenshot](resources/screenshot/simple-translate.gif)
+![simple-translation-screenshot](resources/screenshot/simple-translate.gif)
 
 [Back to top](#features)
 
@@ -180,7 +188,7 @@ and the translation for selected text will be shown in Translation panel.
 
 - The Translation panel also can be opened by command `Translation`.
 
-![complete-translate-screenshot](resources/screenshot/complete-translate.gif)
+![complete-translation-screenshot](resources/screenshot/complete-translate.gif)
 
 [Back to top](#features)
 
