@@ -1,1 +1,0 @@
-# Microsoft Translation API

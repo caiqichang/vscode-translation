@@ -9,6 +9,8 @@ const ttsToken = "6A5AA1D4EAFF4E9FB37E23D68491D6F4"
 const ttsApi = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=${ttsToken}&ConnectionId=`
 
 const translationAuth = "https://edge.microsoft.com/translate/auth"
+// Official Document: 
+// https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/rest-api-guide
 const translationApi = "https://api.cognitive.microsofttranslator.com"
 const translationApiVersion = "3.0"
 
