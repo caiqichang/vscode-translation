@@ -228,7 +228,7 @@ Path: speech.config\r
         }
     }
 }
-        `)
+            `)
 
             websocket.send(`
 X-RequestId: ${crypto.randomUUID()}\r
@@ -243,7 +243,7 @@ ${common.escapeHtml(item.q)}
         </prosody>
     </voice>
 </speak>
-        `)
+            `)
         })
 
         websocket.on("message", (data, isBinary) => {
