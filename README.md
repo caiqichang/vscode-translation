@@ -4,8 +4,6 @@ This extension provides translation (based on Google and Microsoft Translation) 
 
 Get from 
 [Marketplace](https://marketplace.visualstudio.com/items?itemName=caiqichang.vscode-translation) 
-or 
-[OpenVSX](https://open-vsx.org/extension/caiqichang/vscode-translation)
 
 ## Features
 - Multiple languages translation support
